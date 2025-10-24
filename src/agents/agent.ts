@@ -1,7 +1,8 @@
 import { AgentBuilder } from "@iqai/adk";
 import { env } from "../env";
-import { getJokeAgent } from "./joke-agent/agent";
-import { getWeatherAgent } from "./weather-agent/agent";
+import { getResearchAgent } from "./research-agent/agent";
+import { getSummarizeAgent } from "./summarizer-agent/agent";
+import { getWriterAgent } from "./writer-agent/agent";
 
 /**
  * Creates and configures the root agent for the simple agent demonstration.
@@ -13,18 +14,20 @@ import { getWeatherAgent } from "./weather-agent/agent";
  *
  * @returns The fully constructed root agent instance ready to process requests
  */
-export const getRootAgent = () => {
-	const jokeAgent = getJokeAgent();
-	const weatherAgent = getWeatherAgent();
 
-	return AgentBuilder.create("root_agent")
-		.withDescription(
-			"Root agent that delegates tasks to sub-agents for telling jokes and providing weather information.",
-		)
-		.withInstruction(
-			"Use the joke sub-agent for humor requests and the weather sub-agent for weather-related queries. Route user requests to the appropriate sub-agent.",
-		)
-		.withModel(env.LLM_MODEL)
-		.withSubAgents([jokeAgent, weatherAgent])
-		.build();
+export const getRootAgent = () => {
+  const researchAgent = getResearchAgent();
+  const summarizeAgent = getSummarizeAgent();
+  const writerAgent = getWriterAgent();
+
+  return AgentBuilder.create("root_agent")
+    .withDescription(
+      "Root agent that runs sub-agents in sequence based on user requests."
+    )
+    .withInstruction(
+      "Use the research sub-agent for research requests, the summarization sub-agent for summarization requests, and the writing sub-agent for writing assistance."
+    )
+    .withModel(env.LLM_MODEL)
+    .asSequential([researchAgent, summarizeAgent, writerAgent])
+    .build();
 };
