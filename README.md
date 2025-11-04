@@ -1,113 +1,187 @@
+# AI Research Assistant
 
-<div align="center">
+A sophisticated research assistant built with ADK-TS that conducts web research, analyzes findings, and generates comprehensive structured reports on any topic.
 
-<img src="https://files.catbox.moe/vumztw.png" alt="ADK TypeScript Logo" width="100" />
+## Features
 
-<br/>
+🔍 **Web Research**: Uses Google Search to gather information from multiple sources  
+📊 **Intelligent Summarization**: Analyzes and synthesizes research findings  
+📝 **Report Generation**: Creates professional, structured reports with actionable insights  
+🤖 **Sequential Workflow**: Three specialized agents working together seamlessly  
 
-# ADK Simple Agent Starter
+## Architecture
 
-**A starter template to build your own agent with the `@iqai/adk` library.**
+The AI Research Assistant uses a sequential agent workflow:
 
-_Minimal • Extensible • TypeScript_
+1. **Research Agent** - Conducts comprehensive web searches using Google Search tool
+2. **Summarizer Agent** - Analyzes findings and extracts key insights  
+3. **Writer Agent** - Creates polished, structured reports
 
----
+## Getting Started
 
-</div>
+### Prerequisites
 
-This is the recommended starter template for building your own agent with the ADK TypeScript framework.
+- Node.js 18+
+- A Google API key for web search functionality
 
-## 🚀 Get Started
+### Installation
 
-The easiest way to create a new project using this template is with the ADK CLI:
+1. Clone this repository
 
 ```bash
-npm install -g @iqai/adk-cli # if you haven't already
-adk new --template simple-agent my-agent-project
-cd my-agent-project
+git clone <repository-url>
+cd ai-research-assistant
+```
+
+2. Install dependencies
+
+```bash
 pnpm install
 ```
 
-You can also use this template directly by copying the files, but using the CLI is recommended for best results.
-
-### Running the Agent
-
-**Default (Production/Development) Route**
-
-To run your agent in production or for standard development, use:
-
-```bash
-pnpm dev
-```
-
-**Fast Iteration & Agent Setup (ADK CLI)**
-
-For rapid prototyping, interactive testing, or initial agent setup, use the ADK CLI:
-
-```bash
-adk run   # Interactive CLI chat with your agents
-adk web   # Web interface for easy testing and demonstration
-```
-
-## 📁 Folder Structure
-
-The main agent code lives in `index.ts` where the subagents live inside the `agents` folder. The `agents/agent.ts` file is compatible with the ADK CLI for easy testing.
-
-```
-├── src/
-│   ├── agents/
-│   │   ├── agent.ts          # Root agent (ADK CLI compatible)
-│   │   ├── joke-agent/       # Joke-telling sub-agent
-│   │   │   ├── agent.ts
-│   │   │   └── tools.ts
-│   │   └── weather-agent/    # Weather information sub-agent
-│   │       ├── agent.ts
-│   │       └── tools.ts
-│   ├── env.ts                # Environment variable validation
-│   └── index.ts              # Main execution entry point
-```
-
-## ⚙️ Environment Setup
-
-Make sure to configure your environment variables:
+3. Set up environment variables
 
 ```bash
 cp .env.example .env
 ```
 
-## 🧰 Dev Tools
+Edit `.env` and add your API keys:
 
-This starter includes:
+```env
+GOOGLE_API_KEY=your_google_api_key_here
+LLM_MODEL=gemini-2.5-flash
+ADK_DEBUG=false
+```
 
-- **GitHub Actions**: CI/CD pipeline
-- 📦 **PNPM**: Fast package manager
-- 🤖 **ADK CLI**: Interactive testing with `adk run` and `adk web`
+### Running the Assistant
 
-## 🧪 Testing Your Agent
+```bash
+# Development mode (with hot reloading)
+pnpm dev
 
-**Traditional Testing**: Run `pnpm dev` to execute the sample questions.
+# Production build and run
+pnpm build
+pnpm start
+
+# Interactive testing with ADK CLI
+adk run   # CLI chat interface
+adk web   # Web interface
+```
+
+## Usage
+
+The assistant can research any topic and generate comprehensive reports. Example queries:
+
+- "Latest trends in renewable energy technology 2024"
+- "Impact of artificial intelligence on healthcare industry"
+- "Cybersecurity threats and solutions for small businesses"
+- "Market analysis for electric vehicles in Europe"
+- "Recent developments in quantum computing"
+
+## Output Format
+
+The assistant generates structured reports including:
+
+- **Executive Summary** - Key findings overview
+- **Detailed Findings** - In-depth analysis with sources
+- **Trends & Developments** - Recent changes and patterns
+- **Supporting Data** - Statistics and key metrics
+- **Conclusions & Recommendations** - Actionable insights
+- **Sources & References** - Quality-assessed source list
+
+## Project Structure
+
+```
+├── src/
+│   ├── agents/
+│   │   ├── agent.ts              # Root orchestrator agent
+│   │   ├── research-agent/       # Web research specialist
+│   │   │   └── agent.ts
+│   │   ├── summarizer-agent/     # Content synthesis specialist  
+│   │   │   └── agent.ts
+│   │   └── writer-agent/         # Report writing specialist
+│   │       └── agent.ts
+│   ├── tools/                    # Custom tools (if needed)
+│   ├── env.ts                    # Environment configuration
+│   └── index.ts                  # Main execution entry
+```
+
+## Configuration
+
+### Environment Variables
+
+- `GOOGLE_API_KEY` - Required for web search functionality
+- `LLM_MODEL` - AI model to use (default: gemini-2.5-flash)  
+- `ADK_DEBUG` - Enable debug logging (default: false)
+
+### Customization
+
+Each agent can be customized by modifying their instruction sets in:
+
+- `src/agents/research-agent/agent.ts` - Research methodology and search strategy
+- `src/agents/summarizer-agent/agent.ts` - Analysis approach and synthesis rules
+- `src/agents/writer-agent/agent.ts` - Report format and writing style
+
+## Development Commands
+
+```bash
+pnpm dev        # Development mode with hot reloading
+pnpm build      # Build TypeScript project  
+pnpm start      # Run built project
+pnpm clean      # Clean build artifacts
+```
+
+## Testing Your Agent
+
+**Traditional Testing**: Run `pnpm dev` to execute sample research queries.
 
 **Interactive Testing with ADK CLI**:
 
 1. Install: `npm install -g @iqai/adk-cli`
 2. Run: `adk run` for CLI chat or `adk web` for web interface
-3. Perfect for development, testing, and demonstrating your agent's capabilities
+3. Perfect for development, testing, and demonstrating capabilities
 
-## 🏗️ Building Your Agent
+## API Integration
 
-1. **Create new agents** in the `src/agents/` directory
-2. **Add tools** to your agents in the `tools/` subdirectory
-3. **Configure services** in the `src/services/` directory
-4. **Update environment** variables in `src/env.ts`
+The research assistant uses:
 
-## 📚 Links
+- **Google Search API** - For web search capabilities
+- **Gemini AI Models** - For language processing and generation
 
-- [ADK Documentation](https://adk.iqai.com)
-- [ADK GitHub Repository](https://github.com/IQAIcom/adk-ts)
+Make sure to obtain proper API keys and configure them in your `.env` file.
 
-## 🆘 Support
+## Example Workflow
 
-If you encounter any issues or have questions:
+1. **Input**: "Latest trends in renewable energy technology 2024"
 
-- 📝 [Create an issue](https://github.com/IQAIcom/adk-ts/issues)
-- 💬 [Start a discussion](https://github.com/IQAIcom/adk-ts/discussions)
+2. **Research Phase**:
+   - Searches for recent renewable energy developments
+   - Gathers information from multiple sources
+   - Collects statistics, trends, and expert insights
+
+3. **Summarization Phase**:
+   - Identifies key themes and patterns
+   - Extracts most important findings
+   - Organizes information by relevance
+
+4. **Writing Phase**:
+   - Creates structured report with clear sections
+   - Adds context and implications
+   - Provides actionable recommendations
+
+## Learn More
+
+- [ADK-TS Documentation](https://docs.adk.ai) - Framework documentation
+- [Google Search API](https://developers.google.com/custom-search) - Search API setup
+- [Agent Development Guide](https://docs.adk.ai/guides/agents) - Building custom agents
+
+## Support
+
+If you encounter any issues:
+
+- Create an issue on GitHub
+- Start a discussion on the ADK-TS repository
+
+## License
+
+MIT
