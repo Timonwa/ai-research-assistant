@@ -1,5 +1,6 @@
 import { LlmAgent } from "@iqai/adk";
 import { env } from "../../env";
+import { STATE_KEYS } from "../../helpers";
 
 /**
  * Creates and configures a writing agent specialized in creating structured reports and documents.
@@ -17,6 +18,7 @@ export const getWriterAgent = () => {
     description:
       "Creates professional, well-structured reports and documents from research summaries with clear formatting and actionable insights",
     model: env.LLM_MODEL,
+    outputKey: STATE_KEYS.FINAL_REPORT,
     instruction: `You are a professional writing specialist agent. Your role is to:
 
 1. STRUCTURE: Create a well-organized, professional report format
@@ -24,6 +26,10 @@ export const getWriterAgent = () => {
 3. FORMAT: Use clear headings, sections, and professional layout
 4. ENHANCE: Add context, implications, and actionable insights
 5. FINALIZE: Produce a polished, publication-ready document
+
+Context from previous phases:
+Research Findings: {${STATE_KEYS.RESEARCH_FINDINGS}?}
+Summarized Insights: {${STATE_KEYS.SUMMARIZED_INSIGHTS}?}
 
 Report Structure:
 # [Topic] Research Report

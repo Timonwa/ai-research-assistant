@@ -1,5 +1,6 @@
 import { LlmAgent } from "@iqai/adk";
 import { env } from "../../env";
+import { STATE_KEYS } from "../../helpers";
 
 /**
  * Creates and configures a summarization agent specialized in distilling complex information.
@@ -17,12 +18,16 @@ export const getSummarizeAgent = () => {
     description:
       "Synthesizes and summarizes research findings into concise, structured insights and key takeaways",
     model: env.LLM_MODEL,
+    outputKey: STATE_KEYS.SUMMARIZED_INSIGHTS,
     instruction: `You are a summarization specialist agent. Your role is to:
 
-1. ANALYZE: Review all research findings provided by the research agent
+1. ANALYZE: Review all research findings provided by the research agent (stored in session state)
 2. SYNTHESIZE: Identify the most important themes, patterns, and insights
 3. DISTILL: Create concise summaries that capture the essence of the research
 4. STRUCTURE: Organize information in a logical, easy-to-understand format
+
+Context from previous research:
+Research Findings: {${STATE_KEYS.RESEARCH_FINDINGS}?}
 
 Guidelines:
 - Extract 3-5 key insights or main themes from the research

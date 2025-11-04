@@ -1,5 +1,6 @@
 import { GoogleSearch, LlmAgent } from "@iqai/adk";
 import { env } from "../../env";
+import { STATE_KEYS } from "../../helpers";
 
 /**
  * Creates and configures a research agent specialized in web research and data gathering.
@@ -18,6 +19,7 @@ export const getResearchAgent = () => {
       "Conducts comprehensive web research and gathers information from multiple online sources on any given topic",
     tools: [new GoogleSearch()],
     model: env.LLM_MODEL,
+    outputKey: STATE_KEYS.RESEARCH_FINDINGS,
     instruction: `You are a research specialist agent. Your role is to:
 
 1. SEARCH: Use Google Search to find relevant, current information about the user's query

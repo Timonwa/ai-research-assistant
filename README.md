@@ -17,6 +17,31 @@ The AI Research Assistant uses a sequential agent workflow:
 2. **Summarizer Agent** - Analyzes findings and extracts key insights  
 3. **Writer Agent** - Creates polished, structured reports
 
+### Data Flow Diagram
+
+Each agent automatically accesses previous agent's output via session state.
+
+```text
+User Input
+    ↓
+Research Agent
+├─ Uses: Google Search tool
+├─ Creates: Raw findings
+└─ Saves: session.state['research_findings']
+    ↓
+Summarizer Agent
+├─ Reads: {research_findings?}
+├─ Creates: Structured insights
+└─ Saves: session.state['summarized_insights']
+    ↓
+Writer Agent
+├─ Reads: {research_findings?} + {summarized_insights?}
+├─ Creates: Formatted report
+└─ Saves: session.state['final_report']
+    ↓
+User Gets: Final Research Report
+```
+
 ## Getting Started
 
 ### Prerequisites

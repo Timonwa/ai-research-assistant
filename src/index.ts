@@ -7,39 +7,39 @@ dotenv.config();
  * Main function demonstrating the AI Research Assistant.
  *
  * Creates a research assistant that uses a sequential workflow of specialized agents:
- * 1. Research Agent - Conducts web searches using Google Search
- * 2. Summarizer Agent - Analyzes and synthesizes findings
- * 3. Writer Agent - Creates structured reports
+ * 1. Research Agent - Conducts web searches using Google Search and saves findings to session state
+ * 2. Summarizer Agent - Reads findings from state, analyzes and synthesizes them, saves insights to session state
+ * 3. Writer Agent - Reads research and insights from state, creates structured reports and saves final report to session state
  *
- * Processes research queries and generates comprehensive reports.
+ * Each agent saves its output to session state via the outputKey property, allowing the next agent to read and build upon it.
  */
 async function main() {
   // Example research queries for demonstration
-  const researchQueries = [
-    "Latest trends in renewable energy technology 2024",
-    "Impact of artificial intelligence on healthcare industry",
-    "Cybersecurity threats and solutions for small businesses",
-  ];
+  const researchQuery =
+    "Cybersecurity threats and solutions for small businesses";
 
   const { runner } = await getRootAgent();
 
   console.log("🔬 AI Research Assistant Demo");
-  console.log("============================\n");
+  console.log("==============================\n");
 
-  for (const query of researchQueries) {
-    console.log(`� Research Query: ${query}`);
-    console.log("🔍 Starting research workflow...\n");
+  console.log(`📋 Research Query: ${researchQuery}`);
+  console.log("🔍 Starting research workflow...\n");
 
-    try {
-      const response = await runner.ask(query);
-      console.log(`📊 Research Report:\n${response}`);
-      console.log("\n" + "=".repeat(80) + "\n");
-    } catch (error) {
-      console.error(`❌ Error processing query "${query}":`, error);
-      console.log("\n" + "=".repeat(80) + "\n");
-    }
+  try {
+    // Execute the research workflow
+    // The sequential agent workflow automatically manages state passing:
+    // 1. Research Agent saves findings to session state via outputKey
+    // 2. Summarizer Agent reads findings from state, saves insights to state
+    // 3. Writer Agent reads both from state and produces final report
+    const response = await runner.ask(researchQuery);
+
+    console.log(`📊 Research Report:\n${response}`);
+    console.log("\n" + "=".repeat(80) + "\n");
+  } catch (error) {
+    console.error(`❌ Error processing query "${researchQuery}":`, error);
+    console.log("\n" + "=".repeat(80) + "\n");
   }
 }
 
 main().catch(console.error);
-
