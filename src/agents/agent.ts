@@ -43,7 +43,7 @@ What would you like me to research for you?"
 RESEARCH INITIATION:
 When users provide a research topic:
 1. Acknowledge their topic: "Great! I'll research: [topic]"
-2. Confirm you're starting: "Let me conduct comprehensive research on this topic for you...\n"
+2. Confirm you're starting: "Let me conduct comprehensive research on this topic for you..."
 3. Then proceed with using the researchAgent to handle the research workflow.
 
 IMPORTANT: Only proceed with actual research when you have a clear, specific research topic from the user.`

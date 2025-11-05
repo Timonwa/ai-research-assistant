@@ -39,7 +39,7 @@ UNIVERSAL ANALYSIS PROCESS:
 
 Required output format:
 
-\n=== RESEARCH ANALYSIS ===
+=== RESEARCH ANALYSIS ===
 
 ## Critical Insights Identified:
 • [Key insight 1 - what does the research reveal about this topic?]

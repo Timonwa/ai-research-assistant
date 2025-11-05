@@ -47,7 +47,7 @@ EXAMPLES:
 
 Required output format - COMPLETE RAW DATA:
 
-\n=== SEARCH RESULTS COMPILATION ===
+=== SEARCH RESULTS COMPILATION ===
 
 ## Search 1 Results: Overview
 **For each result found, include:**
