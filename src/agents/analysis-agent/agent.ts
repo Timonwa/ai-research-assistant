@@ -41,7 +41,7 @@ Required output format:
 
 === RESEARCH ANALYSIS ===
 
-# [Research Topic Analysis Title]
+# [Analysis of Research Topic Title]
 
 ## Critical Insights Identified:
 • [Key insight 1 - what does the research reveal about this topic?]
