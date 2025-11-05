@@ -42,7 +42,7 @@ Using the raw data and analytical insights provided above, write a complete prof
 
 UNIVERSAL REPORT STRUCTURE:
 
-=== Final Research Report ===
+\n=== Final Research Report ===
 
 # [Research Topic Title - Clear and Professional]
 

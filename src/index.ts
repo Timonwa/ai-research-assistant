@@ -1,6 +1,5 @@
 import * as dotenv from "dotenv";
 import { getRootAgent } from "./agents/agent";
-import { STATE_KEYS } from "./constants";
 
 dotenv.config();
 
@@ -19,7 +18,7 @@ async function main() {
   const researchQuery =
     "Cybersecurity threats and solutions for small businesses";
 
-  const { runner, session, sessionService } = await getRootAgent();
+  const { runner } = await getRootAgent();
 
   console.log("==============================\n");
   console.log("🔬 AI Research Assistant Demo");
@@ -29,7 +28,7 @@ async function main() {
   console.log("🔍 Starting research workflow...\n");
 
   // Run the research query through the agent workflow
-  await runner.ask(researchQuery);
+  const result = await runner.ask(researchQuery);
   try {
     // Execute the research workflow
     // The sequential agent workflow automatically manages state passing:
@@ -37,41 +36,13 @@ async function main() {
     // 2. Analysis Agent reads findings from state, analyzes them, and saves insights to state
     // 3. Writer Agent gets both states from state and produces final report
 
-    //TODO Get the updated session after the workflow completes
-    // The original session object doesn't automatically update, so we need to retrieve the current state
-    const updatedSession = await sessionService.getSession(
-      session.appName,
-      session.userId,
-      session.id
-    );
-
     // Display results from each agent for debugging
     console.log("\n✅ Research workflow completed successfully!");
 
     console.log("\n" + "=".repeat(80));
-    console.log("🔬 DATA COLLECTION RESULTS:");
+    console.log("📝 Final Research Report:\n");
     console.log("=".repeat(80));
-    console.log(
-      updatedSession?.state[STATE_KEYS.RESEARCH_FINDINGS] ||
-        "No research findings found"
-    );
-
-    console.log("\n" + "=".repeat(80));
-    console.log("🔍 ANALYTICAL INSIGHTS:");
-    console.log("=".repeat(80));
-    console.log(
-      updatedSession?.state[STATE_KEYS.SUMMARIZED_INSIGHTS] ||
-        "No analytical insights found"
-    );
-
-    console.log("\n" + "=".repeat(80));
-    console.log("📊 FINAL RESEARCH REPORT:");
-    console.log("=".repeat(80));
-    console.log(
-      updatedSession?.state[STATE_KEYS.FINAL_REPORT] ||
-        "No final report generated"
-    );
-    console.log("=".repeat(80) + "\n");
+    console.log(result || "No research findings found");
   } catch (error) {
     console.error(`❌ Error processing query "${researchQuery}":`, error);
     console.log("\n" + "=".repeat(80) + "\n");
