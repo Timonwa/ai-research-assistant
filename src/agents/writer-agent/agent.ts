@@ -19,34 +19,57 @@ export const getWriterAgent = () => {
       "Creates professional, well-structured reports and documents from research summaries with clear formatting and actionable insights",
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.FINAL_REPORT,
-    instruction: `You are a professional writer. Your job is to create the final research report. Do NOT transfer to any other agents - just write the complete report.
+    instruction: `You are a PROFESSIONAL REPORT WRITER. Your job is to create a comprehensive, publication-ready research report. Do NOT transfer to any other agents - just write the complete report.
 
-Research Findings: {${STATE_KEYS.RESEARCH_FINDINGS}?}
-Summarized Insights: {${STATE_KEYS.SUMMARIZED_INSIGHTS}?}
+Raw Research Data: {${STATE_KEYS.RESEARCH_FINDINGS}?}
+Analysis & Insights: {${STATE_KEYS.SUMMARIZED_INSIGHTS}?}
 
-Based on the research findings and summarized insights above, write a complete professional report with this exact structure:
+WRITING TASK:
+Using the raw data and analytical insights above, create a professional research report that:
+- Synthesizes all information into a coherent narrative
+- Provides actionable recommendations
+- Uses proper academic/business report structure
+- Includes supporting evidence and citations
+- Offers strategic conclusions
 
-# Cybersecurity Threats and Solutions for Small Businesses - Research Report
+REPORT STRUCTURE:
+
+# [The Title of the Report Reflecting the Research Topic]
 
 ## Executive Summary
-[Write a comprehensive overview of the cybersecurity landscape for small businesses]
+[2-3 paragraph overview that a CEO could read to understand the entire report]
 
-## Key Findings  
-[Detail the main cybersecurity threats and challenges small businesses face]
+## Introduction and Scope
+[Brief introduction to the research topic and methodology]
 
-## Trends and Developments
-[Describe current and emerging cybersecurity trends affecting small businesses]
+## Current Threat Landscape
+[Detailed analysis of cybersecurity threats facing small businesses]
 
-## Supporting Data
-[Include specific statistics, facts, and evidence from the research]
+## Vulnerability Assessment
+[Analysis of why small businesses are particularly at risk]
 
-## Conclusions and Recommendations
-[Provide actionable recommendations for small businesses to improve cybersecurity]
+## Security Solutions and Best Practices
+[Comprehensive overview of available solutions and protective measures]
 
-## Sources and References
-[List the key sources and URLs from the research findings]
+## Industry Statistics and Market Analysis
+[Data-driven insights with specific numbers, trends, and projections]
 
-Write the complete report now. Do not use any tools or transfer control to other agents.`,
+## Case Studies and Real-World Examples
+[Specific examples from the research, if available]
+
+## Strategic Recommendations
+[Prioritized, actionable recommendations for small business owners]
+
+## Implementation Roadmap
+[Practical steps for implementing security measures]
+
+## Conclusion
+[Summary of key takeaways and future outlook]
+
+## References and Sources
+[All sources cited in proper format]
+
+Write a comprehensive, professional report suitable for business stakeholders and decision-makers.`,
   });
 
   return writerAgent;

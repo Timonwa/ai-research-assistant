@@ -9,7 +9,7 @@ dotenv.config();
  *
  * Creates a research assistant that uses a sequential workflow of specialized agents:
  * 1. Research Agent - Conducts web searches using Google Search and saves findings to session state
- * 2. Summarizer Agent - Reads findings from state, analyzes and synthesizes them, saves insights to session state
+ * 2. Analysis Agent - Reads findings from state, analyzes and synthesizes them, saves insights to session state
  * 3. Writer Agent - Reads research and insights from state, creates structured reports and saves final report to session state
  *
  * Each agent saves its output to session state via the outputKey property, allowing the next agent to read and build upon it.
@@ -31,7 +31,7 @@ async function main() {
     // Execute the research workflow
     // The sequential agent workflow automatically manages state passing:
     // 1. Research Agent saves findings to session state via outputKey
-    // 2. Summarizer Agent reads findings from state, saves insights to state
+    // 2. Analysis Agent reads findings from state, saves insights to state
     // 3. Writer Agent reads both from state and produces final report
     const response = await runner.ask(researchQuery);
 
@@ -52,11 +52,11 @@ async function main() {
     );
 
     console.log("\n" + "=".repeat(80));
-    console.log("📝 SUMMARIZED INSIGHTS:");
+    console.log("� ANALYTICAL INSIGHTS:");
     console.log("=".repeat(80));
     console.log(
       updatedSession?.state[STATE_KEYS.SUMMARIZED_INSIGHTS] ||
-        "No summarized insights found"
+        "No analytical insights found"
     );
 
     console.log("\n" + "=".repeat(80));
