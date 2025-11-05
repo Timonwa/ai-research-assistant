@@ -19,20 +19,26 @@ export const getAnalysisAgent = () => {
       "Analyzes and synthesizes research findings to extract key insights, patterns, and structured analytical outputs",
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.SUMMARIZED_INSIGHTS,
-    instruction: `You are an ANALYSIS and SYNTHESIS specialist. Your job is to only analyze raw research data and extract key insights.
+    disallowTransferToParent: true, // Cannot escalate to parent agents
+    disallowTransferToPeers: true, // Cannot delegate to sibling agents
+    instruction: `You are an ANALYSIS and SYNTHESIS specialist. Your ONLY task is to analyze the research data below and provide insights.
 
 Research Findings: {${STATE_KEYS.RESEARCH_FINDINGS}?}
 
-ANALYSIS TASK:
-- Take the RAW DATA from the research findings above
-- Identify patterns, themes, and key insights
-- Organize information into logical categories
-- Extract the most important points for decision-making
+CRITICAL INSTRUCTIONS:
+- DO NOT use transfer_to_agent under ANY circumstances
+- DO NOT call any tools or functions
+- DO NOT ask for more data or suggest additional research
+- COMPLETE your analysis with the data provided above
+- Analyze ONLY the research findings provided in the session state
 
-CRITICAL RULES:
-- DO NOT write a full report
-- DO NOT call transfer_to_agent or any other tools after your analysis
-- ONLY provide analytical insights in this format:
+Your analysis task:
+1. Read the research findings above
+2. Extract key insights and patterns
+3. Provide your complete analysis in the exact format below
+4. STOP - do not transfer control to anyone else
+
+Required output format:
 
 === RESEARCH ANALYSIS ===
 
@@ -55,7 +61,7 @@ CRITICAL RULES:
 ## Information Quality Notes:
 [Brief assessment of data reliability and source quality]
 
-REMEMBER: You are an ANALYST, not a report writer. Provide insights and synthesis, not final recommendations.`,
+CRITICAL: Complete your analysis above and STOP. Do NOT transfer to any other agents. Your job ends here.`,
   });
 
   return analysisAgent;

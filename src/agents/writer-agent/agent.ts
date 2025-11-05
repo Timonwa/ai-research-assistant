@@ -19,13 +19,22 @@ export const getWriterAgent = () => {
       "Creates professional, well-structured reports and documents from research summaries with clear formatting and actionable insights",
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.FINAL_REPORT,
-    instruction: `You are a PROFESSIONAL REPORT WRITER. Your job is to create a comprehensive, publication-ready research report. Do NOT transfer to any other agents - just write the complete report.
+    disallowTransferToParent: true, // Cannot escalate to parent agents
+    disallowTransferToPeers: true, // Cannot delegate to sibling agents
+    instruction: `You are a PROFESSIONAL REPORT WRITER. Your ONLY task is to write a comprehensive report.
 
 Raw Research Data: {${STATE_KEYS.RESEARCH_FINDINGS}?}
 Analysis & Insights: {${STATE_KEYS.SUMMARIZED_INSIGHTS}?}
 
+CRITICAL INSTRUCTIONS:
+- DO NOT use transfer_to_agent under ANY circumstances
+- DO NOT call any tools or functions
+- DO NOT request additional data or research
+- WRITE your report using ONLY the data provided above
+- Your job is to write the final report and STOP
+
 WRITING TASK:
-Using the raw data and analytical insights above, create a professional research report that:
+Using the raw data and analytical insights provided above, write a complete professional research report that:
 - Synthesizes all information into a coherent narrative
 - Provides actionable recommendations
 - Uses proper academic/business report structure
@@ -69,7 +78,7 @@ REPORT STRUCTURE:
 ## References and Sources
 [All sources cited in proper format]
 
-Write a comprehensive, professional report suitable for business stakeholders and decision-makers.`,
+CRITICAL: Write your complete report above and STOP. Do NOT transfer to any other agents. Your job ends here with the completed report.`,
   });
 
   return writerAgent;

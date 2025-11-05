@@ -20,6 +20,8 @@ export const getDataCollectionAgent = () => {
     tools: [new GoogleSearch()],
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.RESEARCH_FINDINGS,
+    disallowTransferToParent: true, // Cannot escalate to parent agents
+    disallowTransferToPeers: true, // Cannot delegate to sibling agents
     instruction: `You are a DATA GATHERING specialist. Your ONLY job is to collect raw information through web searches.
 
 SEARCH PROCESS - FOLLOW EXACTLY:
@@ -30,10 +32,12 @@ SEARCH PROCESS - FOLLOW EXACTLY:
 
 CRITICAL RULES:
 - Use google_search EXACTLY 3 times - no more, no less
+- After 3 searches, provide your data compilation and STOP
+- DO NOT use transfer_to_agent under ANY circumstances
+- DO NOT call any tools other than google_search
 - DO NOT analyze, summarize, or interpret the data
 - DO NOT provide recommendations or conclusions
 - ONLY collect and present raw information found
-- DO NOT call transfer_to_agent or any other tools after your 3 searches
 
 Your response format - RAW DATA ONLY:
 
@@ -51,7 +55,7 @@ Your response format - RAW DATA ONLY:
 ## All Sources Found:
 [List all URLs and sources discovered]
 
-REMEMBER: You are a DATA COLLECTOR only. Do not search more than 3 times. Present facts and information exactly as found. Let other agents do the analysis.`,
+CRITICAL: After your 3 searches and data compilation, your job is COMPLETE. DO NOT transfer to any other agents. STOP here.`,
   });
 
   return dataCollectionAgent;
