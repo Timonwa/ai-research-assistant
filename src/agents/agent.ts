@@ -1,6 +1,6 @@
 import { AgentBuilder } from "@iqai/adk";
 import { env } from "../env";
-import { getResearchAgent } from "./research-agent/agent";
+import { getDataCollectionAgent } from "./data-collection-agent/agent";
 import { getAnalysisAgent } from "./analysis-agent/agent";
 import { getWriterAgent } from "./writer-agent/agent";
 import { STATE_KEYS } from "../helpers";
@@ -22,7 +22,7 @@ import { STATE_KEYS } from "../helpers";
  */
 
 export const getRootAgent = () => {
-  const researchAgent = getResearchAgent();
+  const dataCollectionAgent = getDataCollectionAgent();
   const analysisAgent = getAnalysisAgent();
   const writerAgent = getWriterAgent();
 
@@ -31,6 +31,6 @@ export const getRootAgent = () => {
       "AI Research Assistant that conducts web research, analyzes findings, and creates structured reports on any topic"
     )
     .withModel(env.LLM_MODEL)
-    .asSequential([researchAgent, analysisAgent, writerAgent])
+    .asSequential([dataCollectionAgent, analysisAgent, writerAgent])
     .build();
 };

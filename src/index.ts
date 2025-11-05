@@ -8,7 +8,7 @@ dotenv.config();
  * Main function demonstrating the AI Research Assistant.
  *
  * Creates a research assistant that uses a sequential workflow of specialized agents:
- * 1. Research Agent - Conducts web searches using Google Search and saves findings to session state
+ * 1. Data Collection Agent - Conducts web searches using Google Search and saves findings to session state
  * 2. Analysis Agent - Reads findings from state, analyzes and synthesizes them, saves insights to session state
  * 3. Writer Agent - Reads research and insights from state, creates structured reports and saves final report to session state
  *
@@ -30,7 +30,7 @@ async function main() {
   try {
     // Execute the research workflow
     // The sequential agent workflow automatically manages state passing:
-    // 1. Research Agent saves findings to session state via outputKey
+    // 1. Data Collection Agent saves findings to session state via outputKey
     // 2. Analysis Agent reads findings from state, saves insights to state
     // 3. Writer Agent reads both from state and produces final report
     const response = await runner.ask(researchQuery);

@@ -3,20 +3,20 @@ import { env } from "../../env";
 import { STATE_KEYS } from "../../helpers";
 
 /**
- * Creates and configures a research agent specialized in web research and data gathering.
+ * Creates and configures a data collection agent specialized in gathering raw information.
  *
  * This agent is equipped with Google Search capabilities to find relevant information
- * on any given topic. It conducts comprehensive web searches, analyzes multiple sources,
- * and gathers factual information to support research queries.
+ * on any given topic. It conducts systematic web searches and collects raw data
+ * from multiple sources without analysis or interpretation.
  *
- * @returns A configured LlmAgent instance specialized for web research and information gathering
+ * @returns A configured LlmAgent instance specialized for systematic data collection
  */
 
-export const getResearchAgent = () => {
-  const researchAgent = new LlmAgent({
-    name: "research_agent",
+export const getDataCollectionAgent = () => {
+  const dataCollectionAgent = new LlmAgent({
+    name: "data_collection_agent",
     description:
-      "Conducts comprehensive web research and gathers information from multiple online sources on any given topic",
+      "Systematically collects raw data and information from web sources through targeted searches",
     tools: [new GoogleSearch()],
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.RESEARCH_FINDINGS,
@@ -54,5 +54,5 @@ Your response format - RAW DATA ONLY:
 REMEMBER: You are a DATA COLLECTOR only. Do not search more than 3 times. Present facts and information exactly as found. Let other agents do the analysis.`,
   });
 
-  return researchAgent;
+  return dataCollectionAgent;
 };
