@@ -1,6 +1,6 @@
 import { LlmAgent } from "@iqai/adk";
 import { env } from "../../env";
-import { STATE_KEYS } from "../../helpers";
+import { STATE_KEYS } from "../../constants";
 
 /**
  * Creates and configures a writing agent specialized in creating structured reports and documents.
@@ -21,19 +21,17 @@ export const getWriterAgent = () => {
     outputKey: STATE_KEYS.FINAL_REPORT,
     disallowTransferToParent: true, // Cannot escalate to parent agents
     disallowTransferToPeers: true, // Cannot delegate to sibling agents
-    instruction: `You are a PROFESSIONAL REPORT WRITER. Your ONLY task is to write a comprehensive report.
+    instruction: `You are a PROFESSIONAL REPORT WRITER. Your ONLY job is to write a comprehensive report.
 
-Raw Research Data: {${STATE_KEYS.RESEARCH_FINDINGS}?}
+Research Findings: {${STATE_KEYS.RESEARCH_FINDINGS}?}
 Analysis & Insights: {${STATE_KEYS.SUMMARIZED_INSIGHTS}?}
 
 CRITICAL INSTRUCTIONS:
-- DO NOT use transfer_to_agent under ANY circumstances
-- DO NOT call any tools or functions
 - DO NOT request additional data or research
 - WRITE your report using ONLY the data provided above
 - Your job is to write the final report and STOP
 
-WRITING TASK:
+WRITING PROCESS - FOLLOW EXACTLY:
 Using the raw data and analytical insights provided above, write a complete professional research report that:
 - Synthesizes all information into a coherent narrative
 - Provides actionable recommendations
@@ -41,7 +39,9 @@ Using the raw data and analytical insights provided above, write a complete prof
 - Includes supporting evidence and citations
 - Offers strategic conclusions
 
-REPORT STRUCTURE:
+Required output format:
+
+=== REPORT STRUCTURE ===
 
 # [The Title of the Report Reflecting the Research Topic]
 

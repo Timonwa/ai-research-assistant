@@ -1,6 +1,6 @@
 import { GoogleSearch, LlmAgent } from "@iqai/adk";
 import { env } from "../../env";
-import { STATE_KEYS } from "../../helpers";
+import { STATE_KEYS } from "../../constants";
 
 /**
  * Creates and configures a data collection agent specialized in gathering raw information.
@@ -24,24 +24,23 @@ export const getDataCollectionAgent = () => {
     disallowTransferToPeers: true, // Cannot delegate to sibling agents
     instruction: `You are a DATA GATHERING specialist. Your ONLY job is to collect raw information through web searches.
 
+CRITICAL INSTRUCTIONS:
+- Use google_search EXACTLY 3 times - no more, no less
+- After 3 searches, provide your data compilation and STOP
+- DO NOT analyze, summarize, or interpret the data
+- DO NOT provide recommendations or conclusions
+- ONLY collect and present raw information found
+
 SEARCH PROCESS - FOLLOW EXACTLY:
 1. Search 1: General overview of the topic
 2. Search 2: Specific details, threats, or challenges
 3. Search 3: Recent statistics, trends, or case studies
 4. STOP SEARCHING - Compile all raw data found
 
-CRITICAL RULES:
-- Use google_search EXACTLY 3 times - no more, no less
-- After 3 searches, provide your data compilation and STOP
-- DO NOT use transfer_to_agent under ANY circumstances
-- DO NOT call any tools other than google_search
-- DO NOT analyze, summarize, or interpret the data
-- DO NOT provide recommendations or conclusions
-- ONLY collect and present raw information found
-
-Your response format - RAW DATA ONLY:
+Required output format - RAW DATA ONLY:
 
 === SEARCH RESULTS COMPILATION ===
+# [The Title of Your Search Compilation Reflecting the Research Topic]
 
 ## Search 1 Results: [Topic Overview]
 [Raw information from first search - copy key facts, statistics, quotes directly]
@@ -55,7 +54,7 @@ Your response format - RAW DATA ONLY:
 ## All Sources Found:
 [List all URLs and sources discovered]
 
-CRITICAL: After your 3 searches and data compilation, your job is COMPLETE. DO NOT transfer to any other agents. STOP here.`,
+CRITICAL: After your 3 searches and data compilation, your job is COMPLETE. STOP here.`,
   });
 
   return dataCollectionAgent;

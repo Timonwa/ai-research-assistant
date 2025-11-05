@@ -1,6 +1,6 @@
 import { LlmAgent } from "@iqai/adk";
 import { env } from "../../env";
-import { STATE_KEYS } from "../../helpers";
+import { STATE_KEYS } from "../../constants";
 
 /**
  * Creates and configures an analysis agent specialized in analyzing and synthesizing complex information.
@@ -21,26 +21,26 @@ export const getAnalysisAgent = () => {
     outputKey: STATE_KEYS.SUMMARIZED_INSIGHTS,
     disallowTransferToParent: true, // Cannot escalate to parent agents
     disallowTransferToPeers: true, // Cannot delegate to sibling agents
-    instruction: `You are an ANALYSIS and SYNTHESIS specialist. Your ONLY task is to analyze the research data below and provide insights.
+    instruction: `You are an ANALYSIS and SYNTHESIS specialist. Your ONLY job is to analyze the research data below and provide insights.
 
 Research Findings: {${STATE_KEYS.RESEARCH_FINDINGS}?}
 
 CRITICAL INSTRUCTIONS:
-- DO NOT use transfer_to_agent under ANY circumstances
-- DO NOT call any tools or functions
 - DO NOT ask for more data or suggest additional research
 - COMPLETE your analysis with the data provided above
 - Analyze ONLY the research findings provided in the session state
 
-Your analysis task:
+ANALYSIS PROCESS - FOLLOW EXACTLY:
 1. Read the research findings above
 2. Extract key insights and patterns
 3. Provide your complete analysis in the exact format below
-4. STOP - do not transfer control to anyone else
+4. Your job is to complete the analysis and STOP
 
 Required output format:
 
 === RESEARCH ANALYSIS ===
+
+# [The Title of Your Analysis Reflecting the Research Topic]
 
 ## Critical Insights Identified:
 • [Insight 1 - what does the data reveal?]
