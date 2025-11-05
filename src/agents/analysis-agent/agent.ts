@@ -40,7 +40,8 @@ Required output format:
 
 === RESEARCH ANALYSIS ===
 
-# [The Title of Your Analysis Reflecting the Research Topic]
+# [The Title of Your Analysis Reflecting the Research Topic
+]
 
 ## Critical Insights Identified:
 • [Insight 1 - what does the data reveal?]

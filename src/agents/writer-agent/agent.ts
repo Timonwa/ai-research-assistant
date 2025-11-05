@@ -76,9 +76,7 @@ Required output format:
 [Summary of key takeaways and future outlook]
 
 ## References and Sources
-[All sources cited in proper format]
-
-CRITICAL: Write your complete report above and STOP. Do NOT transfer to any other agents. Your job ends here with the completed report.`,
+[All sources cited in proper format]`,
   });
 
   return writerAgent;
