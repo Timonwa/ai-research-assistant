@@ -19,14 +19,17 @@ async function main() {
   const researchQuery =
     "Cybersecurity threats and solutions for small businesses";
 
-  const { session, sessionService } = await getRootAgent();
+  const { runner, session, sessionService } = await getRootAgent();
 
+  console.log("==============================\n");
   console.log("🔬 AI Research Assistant Demo");
   console.log("==============================\n");
 
   console.log(`📋 Research Query: ${researchQuery}`);
   console.log("🔍 Starting research workflow...\n");
 
+  // Run the research query through the agent workflow
+  await runner.ask(researchQuery);
   try {
     // Execute the research workflow
     // The sequential agent workflow automatically manages state passing:
