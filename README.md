@@ -5,41 +5,47 @@ A sophisticated research assistant built with ADK-TS that conducts web research,
 ## Features
 
 🔍 **Web Research**: Uses Google Search to gather information from multiple sources  
-📊 **Intelligent Summarization**: Analyzes and synthesizes research findings  
-📝 **Report Generation**: Creates professional, structured reports with actionable insights  
+📊 **Intelligent Analysis**: Analyzes and synthesizes research findings with expert consensus  
+📝 **Professional Reports**: Creates structured reports with actionable insights  
 🤖 **Sequential Workflow**: Three specialized agents working together seamlessly  
+🛡️ **Loop Prevention**: Advanced transfer controls prevent infinite agent loops  
+💬 **Interactive Interface**: User-friendly greeting and topic confirmation system  
+🎯 **Topic Agnostic**: Works with any research topic (technology, business, health, etc.)
 
 ## Architecture
 
-The AI Research Assistant uses a sequential agent workflow:
+The AI Research Assistant uses a sequential agent workflow with specialized roles:
 
-1. **Research Agent** - Conducts comprehensive web searches using Google Search tool
-2. **Summarizer Agent** - Analyzes findings and extracts key insights  
-3. **Writer Agent** - Creates polished, structured reports
+1. **Data Collection Agent** - Conducts comprehensive web searches and gathers raw data
+2. **Analysis Agent** - Analyzes findings, identifies patterns, and extracts key insights  
+3. **Writer Agent** - Creates polished, structured reports with recommendations
 
 ### Data Flow Diagram
 
-Each agent automatically accesses previous agent's output via session state.
+Each agent automatically accesses previous agent's output via session state with transfer controls to prevent loops.
 
 ```text
-User Input
+User Input → Interactive Greeting
     ↓
-Research Agent
+Data Collection Agent
 ├─ Uses: Google Search tool
-├─ Creates: Raw findings
-└─ Saves: session.state['research_findings']
+├─ Creates: Raw research findings with full content
+├─ Saves: session.state['research_findings']
+├─ Transfer Control: disallowTransferToParent/Peers: true
     ↓
-Summarizer Agent
-├─ Reads: {research_findings?}
-├─ Creates: Structured insights
-└─ Saves: session.state['summarized_insights']
+Analysis Agent
+├─ Reads: {research_findings}
+├─ Creates: Analytical insights and expert consensus
+├─ Saves: session.state['summarized_insights']
+├─ Transfer Control: disallowTransferToParent/Peers: true
     ↓
 Writer Agent
-├─ Reads: {research_findings?} + {summarized_insights?}
-├─ Creates: Formatted report
-└─ Saves: session.state['final_report']
+├─ Reads: {research_findings} + {summarized_insights}
+├─ Creates: Comprehensive research report
+├─ Saves: session.state['final_report']
+├─ Transfer Control: disallowTransferToParent/Peers: true
     ↓
-User Gets: Final Research Report
+User Gets: Formatted Research Report
 ```
 
 ## Getting Started
@@ -116,17 +122,16 @@ The assistant generates structured reports including:
 
 ## Project Structure
 
-```
+```text
 ├── src/
 │   ├── agents/
 │   │   ├── agent.ts              # Root orchestrator agent
-│   │   ├── research-agent/       # Web research specialist
+│   │   ├── data-collection-agent/ # Web research specialist
 │   │   │   └── agent.ts
-│   │   ├── summarizer-agent/     # Content synthesis specialist  
+│   │   ├── analysis-agent/       # Content analysis specialist  
 │   │   │   └── agent.ts
 │   │   └── writer-agent/         # Report writing specialist
 │   │       └── agent.ts
-│   ├── tools/                    # Custom tools (if needed)
 │   ├── env.ts                    # Environment configuration
 │   └── index.ts                  # Main execution entry
 ```
@@ -143,8 +148,8 @@ The assistant generates structured reports including:
 
 Each agent can be customized by modifying their instruction sets in:
 
-- `src/agents/research-agent/agent.ts` - Research methodology and search strategy
-- `src/agents/summarizer-agent/agent.ts` - Analysis approach and synthesis rules
+- `src/agents/data-collection-agent/agent.ts` - Research methodology and search strategy
+- `src/agents/analysis-agent/agent.ts` - Analysis approach and synthesis rules
 - `src/agents/writer-agent/agent.ts` - Report format and writing style
 
 ## Development Commands
@@ -179,15 +184,15 @@ Make sure to obtain proper API keys and configure them in your `.env` file.
 
 1. **Input**: "Latest trends in renewable energy technology 2024"
 
-2. **Research Phase**:
+2. **Data Collection Phase**:
    - Searches for recent renewable energy developments
    - Gathers information from multiple sources
    - Collects statistics, trends, and expert insights
 
-3. **Summarization Phase**:
+3. **Analysis Phase**:
    - Identifies key themes and patterns
    - Extracts most important findings
-   - Organizes information by relevance
+   - Organizes information by relevance and consensus
 
 4. **Writing Phase**:
    - Creates structured report with clear sections
@@ -196,9 +201,8 @@ Make sure to obtain proper API keys and configure them in your `.env` file.
 
 ## Learn More
 
-- [ADK-TS Documentation](https://docs.adk.ai) - Framework documentation
-- [Google Search API](https://developers.google.com/custom-search) - Search API setup
-- [Agent Development Guide](https://docs.adk.ai/guides/agents) - Building custom agents
+- [ADK-TS Documentation](https://adk.iqai.com) - Framework documentation
+- [Google Search API](https://developers.google.com/custom-search/v1/overview) - Search API setup
 
 ## Support
 
@@ -214,3 +218,4 @@ MIT
 ## TO DO
 
 - [ ] Update `.env` and `env.ts` to use gemini model by default
+- [ ] Update README and package.json with current features

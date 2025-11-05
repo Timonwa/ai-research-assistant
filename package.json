@@ -1,7 +1,7 @@
 {
   "name": "ai-research-assistant",
   "version": "1.0.0",
-  "description": "An AI Research Assistant built with ADK-TS that searches the web, summarizes results, and builds structured reports",
+  "description": "A sophisticated AI Research Assistant built with ADK-TS that conducts web research on any topic, analyzes findings, and generates comprehensive structured reports with transfer controls and interactive user interface",
   "main": "dist/index.js",
   "private": true,
   "scripts": {
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/IQAICOM/adk-agent-starter.git"
+    "url": "git+https://github.com/Timonwa/ai-research-assistant.git"
   },
   "keywords": [
     "ai",
@@ -24,14 +24,17 @@
     "adk-ts",
     "IQAI",
     "web-search",
-    "summarization"
+    "analysis",
+    "report-generation",
+    "transfer-controls",
+    "interactive"
   ],
   "author": "IQAI",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/IQAICOM/adk-agent-starter/issues"
+    "url": "https://github.com/Timonwa/ai-research-assistant/issues"
   },
-  "homepage": "https://github.com/IQAICOM/adk-agent-starter#readme",
+  "homepage": "https://github.com/Timonwa/ai-research-assistant#readme",
   "dependencies": {
     "@iqai/adk": "^0.5.3",
     "dotenv": "^17.2.2",
