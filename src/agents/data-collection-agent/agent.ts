@@ -48,7 +48,6 @@ EXAMPLES:
 Required output format - COMPLETE RAW DATA:
 
 === SEARCH RESULTS COMPILATION ===
-# [Research Topic Title]
 
 ## Search 1 Results: Overview
 **For each result found, include:**

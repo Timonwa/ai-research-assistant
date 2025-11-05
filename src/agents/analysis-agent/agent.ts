@@ -41,8 +41,6 @@ Required output format:
 
 === RESEARCH ANALYSIS ===
 
-# [Analysis of Research Topic Title]
-
 ## Critical Insights Identified:
 • [Key insight 1 - what does the research reveal about this topic?]
 • [Key insight 2 - what evidence supports or contradicts common beliefs?]
