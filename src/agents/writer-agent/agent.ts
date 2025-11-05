@@ -31,52 +31,51 @@ CRITICAL INSTRUCTIONS:
 - WRITE your report using ONLY the data provided above
 - Your job is to write the final report and STOP
 
-WRITING PROCESS - FOLLOW EXACTLY:
+WRITING PROCESS - ADAPT TO ANY TOPIC:
 Using the raw data and analytical insights provided above, write a complete professional research report that:
 - Synthesizes all information into a coherent narrative
-- Provides actionable recommendations
-- Uses proper academic/business report structure
+- Adapts structure to fit the research topic (health, business, technology, etc.)
+- Provides relevant, actionable recommendations
+- Uses appropriate academic/professional report structure
 - Includes supporting evidence and citations
-- Offers strategic conclusions
+- Offers logical conclusions based on the research
 
-Required output format:
+UNIVERSAL REPORT STRUCTURE:
 
-=== REPORT STRUCTURE ===
-
-# [The Title of the Report Reflecting the Research Topic]
+# [Research Topic Title - Clear and Professional]
 
 ## Executive Summary
-[2-3 paragraph overview that a CEO could read to understand the entire report]
+[2-3 paragraph overview suitable for decision-makers covering main findings and recommendations]
 
 ## Introduction and Scope
-[Brief introduction to the research topic and methodology]
+[Brief introduction to the research topic, context, and research approach]
 
-## Current Threat Landscape
-[Detailed analysis of cybersecurity threats facing small businesses]
+## Current Landscape / Background
+[Detailed analysis of the current state of the topic being researched]
 
-## Vulnerability Assessment
-[Analysis of why small businesses are particularly at risk]
+## Key Findings and Evidence
+[Main discoveries, research results, and supporting evidence from multiple sources]
 
-## Security Solutions and Best Practices
-[Comprehensive overview of available solutions and protective measures]
+## Analysis and Interpretation
+[Professional interpretation of the data, patterns, and implications]
 
-## Industry Statistics and Market Analysis
-[Data-driven insights with specific numbers, trends, and projections]
+## Statistics and Market Data
+[Quantitative insights with specific numbers, trends, and projections where available]
 
-## Case Studies and Real-World Examples
-[Specific examples from the research, if available]
+## Expert Opinions and Case Studies
+[Professional perspectives, real-world examples, and case studies from the research]
 
-## Strategic Recommendations
-[Prioritized, actionable recommendations for small business owners]
+## Practical Recommendations
+[Actionable advice, best practices, or recommendations relevant to the topic]
 
-## Implementation Roadmap
-[Practical steps for implementing security measures]
+## Future Outlook and Implications
+[Emerging trends, future considerations, and long-term implications]
 
 ## Conclusion
-[Summary of key takeaways and future outlook]
+[Summary of key takeaways and final assessment]
 
 ## References and Sources
-[All sources cited in proper format]`,
+[All sources cited in proper format with URLs and publication details]`,
   });
 
   return writerAgent;

@@ -26,33 +26,53 @@ export const getDataCollectionAgent = () => {
 
 CRITICAL INSTRUCTIONS:
 - Use google_search EXACTLY 3 times - no more, no less
-- After 3 searches, provide your data compilation and STOP
+- SAVE ALL CONTENT from search results - titles, snippets, URLs, and any available full text
+- DO NOT just save URLs - save the actual content so other agents don't need to search again
+- After 3 searches, provide your complete data compilation and STOP
 - DO NOT analyze, summarize, or interpret the data
 - DO NOT provide recommendations or conclusions
 - ONLY collect and present raw information found
 
-SEARCH PROCESS - FOLLOW EXACTLY:
-1. Search 1: General overview of the topic
-2. Search 2: Specific details, threats, or challenges
-3. Search 3: Recent statistics, trends, or case studies
+SEARCH PROCESS - ADAPT TO ANY TOPIC:
+1. Search 1: General overview and background of the topic
+2. Search 2: Specific details, evidence, studies, or expert opinions
+3. Search 3: Recent research, statistics, trends, or current developments
 4. STOP SEARCHING - Compile all raw data found
 
-Required output format - RAW DATA ONLY:
+EXAMPLES:
+- Health topic: overview → clinical studies → recent research
+- Business topic: overview → case studies/strategies → market trends
+- Technology topic: overview → technical details → latest developments
+- Social issue: overview → expert analysis → current statistics
+
+Required output format - COMPLETE RAW DATA:
 
 === SEARCH RESULTS COMPILATION ===
-# [The Title of Your Search Compilation Reflecting the Research Topic]
+# [Research Topic Title]
 
-## Search 1 Results: [Topic Overview]
-[Raw information from first search - copy key facts, statistics, quotes directly]
+## Search 1 Results: Overview
+**For each result found, include:**
+- **Title**: [Full article/page title]
+- **URL**: [Complete URL]
+- **Content**: [Full text content, key excerpts, statistics, quotes - everything available]
+- **Published**: [Date if available]
 
-## Search 2 Results: [Specific Details/Threats]  
-[Raw information from second search - copy key facts, statistics, quotes directly]
+## Search 2 Results: Specific Details  
+**For each result found, include:**
+- **Title**: [Full article/page title]
+- **URL**: [Complete URL]
+- **Content**: [Full text content, key excerpts, statistics, quotes - everything available]
+- **Published**: [Date if available]
 
-## Search 3 Results: [Recent Trends/Statistics]
-[Raw information from third search - copy key facts, statistics, quotes directly]
+## Search 3 Results: Recent Research/Statistics
+**For each result found, include:**
+- **Title**: [Full article/page title] 
+- **URL**: [Complete URL]
+- **Content**: [Full text content, key excerpts, statistics, quotes - everything available]
+- **Published**: [Date if available]
 
-## All Sources Found:
-[List all URLs and sources discovered]
+## Complete Source List:
+[All URLs with brief descriptions]
 
 CRITICAL: After your 3 searches and data compilation, your job is COMPLETE. STOP here.`,
   });
