@@ -1,29 +1,25 @@
 import { AgentBuilder } from "@iqai/adk";
 import { env } from "../env";
-import { getDataCollectionAgent } from "./data-collection-agent/agent";
-import { getAnalysisAgent } from "./analysis-agent/agent";
-import { getWriterAgent } from "./writer-agent/agent";
+import { getResearchAgent } from "./research-agent/agent";
 
 /**
  * Creates and configures the root agent for the AI Research Assistant.
  *
- * This agent serves as the main orchestrator that coordinates a sequential workflow
- * of specialized sub-agents to transform user research queries into comprehensive
- * structured reports. It demonstrates the ADK pattern of using multiple agents
- * working together in a coordinated pipeline with session state management.
+ * This agent serves as the main conversational interface that can greet users
+ * and delegate research tasks to the specialized research workflow agent.
+ * It demonstrates proper agent orchestration where the root agent handles
+ * conversation while specialized agents handle specific workflows.
  *
- * The workflow uses session state to pass data between agents:
- * 1. Data Collection Agent saves raw findings to session state
- * 2. Analysis Agent reads findings and saves analytical insights
- * 3. Writer Agent reads insights and produces final report
+ * The workflow delegation:
+ * 1. Root agent handles greetings and topic validation
+ * 2. When research is requested, delegates to research agent
+ * 3. Research agent runs the sequential workflow of data collection → analysis → writing
  *
- * @returns The fully constructed root agent instance ready to process research requests
+ * @returns The fully constructed root agent instance ready to handle user interactions
  */
 
-export const getRootAgent = () => {
-  const dataCollectionAgent = getDataCollectionAgent();
-  const analysisAgent = getAnalysisAgent();
-  const writerAgent = getWriterAgent();
+export const getRootAgent = async () => {
+  const researchAgent = await getResearchAgent();
 
   return AgentBuilder.create("ai_research_assistant")
     .withDescription(
@@ -48,10 +44,10 @@ RESEARCH INITIATION:
 When users provide a research topic:
 1. Acknowledge their topic: "Great! I'll research: [topic]"
 2. Confirm you're starting: "Let me conduct comprehensive research on this topic for you..."
-3. Then proceed with the research workflow using your specialized agents
+3. Then proceed with using the researchAgent to handle the research workflow.
 
 IMPORTANT: Only proceed with actual research when you have a clear, specific research topic from the user.`
     )
-    .asSequential([dataCollectionAgent, analysisAgent, writerAgent])
+    .withSubAgents([researchAgent])
     .build();
 };
