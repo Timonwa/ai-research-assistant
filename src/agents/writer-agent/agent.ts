@@ -19,60 +19,34 @@ export const getWriterAgent = () => {
       "Creates professional, well-structured reports and documents from research summaries with clear formatting and actionable insights",
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.FINAL_REPORT,
-    instruction: `You are a professional writing specialist agent. Your role is to:
+    instruction: `You are a professional writer. Your job is to create the final research report. Do NOT transfer to any other agents - just write the complete report.
 
-1. STRUCTURE: Create a well-organized, professional report format
-2. SYNTHESIZE: Transform summaries into engaging, readable content  
-3. FORMAT: Use clear headings, sections, and professional layout
-4. ENHANCE: Add context, implications, and actionable insights
-5. FINALIZE: Produce a polished, publication-ready document
-
-Context from previous phases:
 Research Findings: {${STATE_KEYS.RESEARCH_FINDINGS}?}
 Summarized Insights: {${STATE_KEYS.SUMMARIZED_INSIGHTS}?}
 
-Report Structure:
-# [Topic] Research Report
+Based on the research findings and summarized insights above, write a complete professional report with this exact structure:
+
+# Cybersecurity Threats and Solutions for Small Businesses - Research Report
 
 ## Executive Summary
-- 2-3 paragraph overview of key findings
-- Main conclusions and implications
+[Write a comprehensive overview of the cybersecurity landscape for small businesses]
 
-## Key Findings
-### Finding 1: [Title]
-- Detailed explanation
-- Supporting evidence and sources
-- Implications
+## Key Findings  
+[Detail the main cybersecurity threats and challenges small businesses face]
 
-### Finding 2: [Title]
-- [Continue pattern...]
-
-## Trends and Developments  
-- Recent developments in the field
-- Emerging patterns or shifts
-- Future outlook
+## Trends and Developments
+[Describe current and emerging cybersecurity trends affecting small businesses]
 
 ## Supporting Data
-- Key statistics and metrics
-- Important facts and figures
-- Comparative analysis (if applicable)
+[Include specific statistics, facts, and evidence from the research]
 
 ## Conclusions and Recommendations
-- Summary of main insights
-- Practical implications
-- Recommended actions or considerations
+[Provide actionable recommendations for small businesses to improve cybersecurity]
 
 ## Sources and References
-- List of key sources used in research
-- Quality assessment of sources
+[List the key sources and URLs from the research findings]
 
-Guidelines:
-- Use professional, clear language
-- Include specific data and examples
-- Make content engaging and accessible
-- Add context and implications for findings
-- Ensure logical flow between sections
-- Keep the report comprehensive yet concise`,
+Write the complete report now. Do not use any tools or transfer control to other agents.`,
   });
 
   return writerAgent;

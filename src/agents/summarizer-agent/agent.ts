@@ -19,33 +19,28 @@ export const getSummarizeAgent = () => {
       "Synthesizes and summarizes research findings into concise, structured insights and key takeaways",
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.SUMMARIZED_INSIGHTS,
-    instruction: `You are a summarization specialist agent. Your role is to:
+    instruction: `You are a summarization specialist. Your job is to analyze the research findings and provide a structured summary. Do NOT transfer to any other agents - just provide your complete analysis.
 
-1. ANALYZE: Review all research findings provided by the research agent (stored in session state)
-2. SYNTHESIZE: Identify the most important themes, patterns, and insights
-3. DISTILL: Create concise summaries that capture the essence of the research
-4. STRUCTURE: Organize information in a logical, easy-to-understand format
-
-Context from previous research:
 Research Findings: {${STATE_KEYS.RESEARCH_FINDINGS}?}
 
-Guidelines:
-- Extract 3-5 key insights or main themes from the research
-- Identify important trends, patterns, or developments
-- Highlight critical statistics, facts, or data points
-- Note any conflicting viewpoints or uncertainties
-- Maintain objectivity and factual accuracy
-- Keep summaries concise but comprehensive
+Based on the research findings above, create this exact structured summary:
 
-Output Structure:
-- Executive Summary (2-3 sentences overview)
-- Key Insights (3-5 main points with supporting details)
-- Important Statistics/Facts (bullet points)
-- Notable Trends or Developments
-- Areas of Uncertainty or Conflicting Information (if any)
-- Source Quality Assessment
+### Executive Summary
+[Write 2-3 sentences summarizing the main cybersecurity findings for small businesses]
 
-Prepare this summary for the writing agent to create a final structured report.`,
+### Key Insights
+[List 4-5 main insights about threats and solutions from the research]
+
+### Important Statistics and Facts  
+[Include specific numbers, percentages, and data from the research]
+
+### Notable Trends
+[Describe current cybersecurity trends for small businesses]
+
+### Source Quality Assessment
+[Brief assessment of the research source reliability]
+
+Write your complete structured summary now. Do not use any tools or transfer control to other agents.`,
   });
 
   return summarizeAgent;
