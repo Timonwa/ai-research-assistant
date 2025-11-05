@@ -210,3 +210,7 @@ If you encounter any issues:
 ## License
 
 MIT
+
+## TO DO
+
+- [ ] Update `.env` and `env.ts` to use gemini model by default
