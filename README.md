@@ -16,13 +16,13 @@ An AI-powered research assistant that processes any research topic through three
 
 ## Features
 
-🔍 **Web Research Output**: First agent gathers and outputs raw research data from multiple sources using Google Search
-📊 **Analysis Output**: Second agent provides analyzed findings and expert consensus  
-📝 **Report Output**: Third agent delivers a final structured report  
-🤖 **Sequential Processing**: Demonstrates how three agents work in sequence  
-🛡️ **State Management**: Shows how agents pass data through session state  
-💬 **Interactive Interface**: User-friendly greeting and topic confirmation system  
-🎯 **Topic Agnostic**: Works with any research topic (technology, business, health, etc.)
+- 🔍 **Web Research Output**: First agent gathers and outputs raw research data from multiple sources using Google Search
+- 📊 **Analysis Output**: Second agent provides analyzed findings and expert consensus  
+- 📝 **Report Output**: Third agent delivers a final structured report  
+- 🤖 **Sequential Processing**: Demonstrates how three agents work in sequence  
+- 🛡️ **State Management**: Shows how agents pass data through session state  
+- 💬 **Interactive Interface**: User-friendly greeting and topic confirmation system  
+- 🎯 **Topic Agnostic**: Works with any research topic (technology, business, health, etc.)
 
 ## Architecture and Workflow
 
@@ -31,6 +31,22 @@ This project demonstrates sequential agent workflow in ADK-TS, where each agent 
 1. **Data Collection Agent** - Raw research findings from web searches
 2. **Analysis Agent** - Analytical insights and patterns from the research  
 3. **Writer Agent** - A polished, structured final report
+
+### Project Structure
+
+```text
+├── src/
+│   ├── agents/
+│   │   ├── agent.ts              # Root orchestrator agent
+│   │   ├── data-collection-agent/ # Web research specialist
+│   │   │   └── agent.ts
+│   │   ├── analysis-agent/       # Content analysis specialist  
+│   │   │   └── agent.ts
+│   │   └── writer-agent/         # Report writing specialist
+│   │       └── agent.ts
+│   ├── env.ts                    # Environment configuration
+│   └── index.ts                  # Main execution entry
+```
 
 ### Data Flow
 
@@ -49,7 +65,7 @@ graph TB
 
     AnalysisAgent --> WriterAgent[📝 Writer Agent<br/>• Reads research_findings + summarized_insights<br/>• Creates Final Report<br/>• Saves: final_report<br/>📄 Output 3: Structured Report]
 
-    WriterAgent --> Output[� Three Distinct Research Outputs]
+    WriterAgent --> Output[📄 Three Distinct Research Outputs]
 
     %% Styling
     classDef userLayer fill:#e1f5fe,color:#01579b
@@ -91,7 +107,7 @@ pnpm install
 cp .env.example .env
 ```
 
-Edit `.env` and add your API keys:
+4. Edit `.env` and add your API keys:
 
 ```env
 GOOGLE_API_KEY=your_google_api_key_here
@@ -131,27 +147,12 @@ The assistant can research any topic and generate comprehensive reports. Here ar
 - "Market analysis for electric vehicles in Europe"
 - "Recent developments in quantum computing"
 
-## Project Structure
-
-```text
-├── src/
-│   ├── agents/
-│   │   ├── agent.ts              # Root orchestrator agent
-│   │   ├── data-collection-agent/ # Web research specialist
-│   │   │   └── agent.ts
-│   │   ├── analysis-agent/       # Content analysis specialist  
-│   │   │   └── agent.ts
-│   │   └── writer-agent/         # Report writing specialist
-│   │       └── agent.ts
-│   ├── env.ts                    # Environment configuration
-│   └── index.ts                  # Main execution entry
-```
-
-## 📚 Learn More
+## Useful Resources
 
 - [ADK-TS Documentation](https://adk.iqai.com/)
 - [ADK-TS CLI Documentation](https://adk.iqai.com/docs/cli)
 - [GitHub Repository](https://github.com/IQAICOM/adk-ts)
+- [Discord Community](https://discord.gg/w2Uk6ACK4D)
 
 ## Contributing
 
