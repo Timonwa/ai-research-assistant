@@ -24,7 +24,7 @@ An AI-powered research assistant that processes any research topic through three
 - 💬 **Interactive Interface**: User-friendly greeting and topic confirmation system  
 - 🎯 **Topic Agnostic**: Works with any research topic (technology, business, health, etc.)
 
-> **Note**: This project currently uses a mock Google Search tool for demonstration purposes. To enable real data fetching, add your API keys and extend the tool's `runAsync()` method to call Google's Custom Search API.
+> **Note**: This project currently uses the built-in Google Search tool that returns dummy data for demonstration purposes. For real data, you can extend it just as it's done in `GoogleSearchTool.ts` to fetch real results. You can use the `GoogleSearchTool` to test with real Google Custom Search API data.
 
 ## Architecture and Workflow
 
@@ -113,6 +113,7 @@ Edit `.env` and add your API keys:
 
 ```env
 GOOGLE_API_KEY=your_google_api_key_here
+GOOGLE_CX=your_google_custom_search_engine_id_here
 LLM_MODEL=gemini-2.5-flash
 ```
 
@@ -153,6 +154,7 @@ The assistant can research any topic and generate comprehensive reports. Here ar
 
 - [ADK-TS Documentation](https://adk.iqai.com/)
 - [ADK-TS CLI Documentation](https://adk.iqai.com/docs/cli)
+- [Google Custom Search API Documentation](https://developers.google.com/custom-search/v1/overview)
 - [GitHub Repository](https://github.com/IQAICOM/adk-ts)
 - [Discord Community](https://discord.gg/w2Uk6ACK4D)
 
