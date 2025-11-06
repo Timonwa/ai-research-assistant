@@ -24,6 +24,8 @@ An AI-powered research assistant that processes any research topic through three
 - 💬 **Interactive Interface**: User-friendly greeting and topic confirmation system  
 - 🎯 **Topic Agnostic**: Works with any research topic (technology, business, health, etc.)
 
+> **Note**: This project currently uses a mock Google Search tool for demonstration purposes. To enable real data fetching, add your API keys and extend the tool's `runAsync()` method to call Google's Custom Search API.
+
 ## Architecture and Workflow
 
 This project demonstrates sequential agent workflow in ADK-TS, where each agent produces its own distinct output:
@@ -107,7 +109,7 @@ pnpm install
 cp .env.example .env
 ```
 
-4. Edit `.env` and add your API keys:
+Edit `.env` and add your API keys:
 
 ```env
 GOOGLE_API_KEY=your_google_api_key_here
