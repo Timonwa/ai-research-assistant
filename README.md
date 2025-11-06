@@ -167,6 +167,10 @@ We welcome contributions to the ADK-TS Samples repository! You can:
 
 Please see our [Contributing Guide](CONTRIBUTING.md) for detailed guidelines.
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ---
 
 **🎉 Ready to build?** This sample project provides a solid foundation for creating your own AI research assistant using the ADK-TS framework. Happy coding!
