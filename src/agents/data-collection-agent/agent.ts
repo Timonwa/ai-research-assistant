@@ -1,6 +1,7 @@
 import { GoogleSearch, LlmAgent } from "@iqai/adk";
 import { env } from "../../env";
 import { STATE_KEYS } from "../../constants";
+import { GoogleSearchTool } from "./tools/GoogleSearchTool";
 
 /**
  * Creates and configures a data collection agent specialized in gathering raw information.
@@ -17,6 +18,8 @@ export const getDataCollectionAgent = () => {
     name: "data_collection_agent",
     description:
       "Systematically collects raw data and information from web sources through targeted searches",
+    // Note: The built-in GoogleSearch tool returns dummy data for demonstration/development purposes.
+    // For real Google search results, use the custom GoogleSearchTool instead.
     tools: [new GoogleSearch()],
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.RESEARCH_FINDINGS,
@@ -69,9 +72,6 @@ Required output format - COMPLETE RAW DATA:
 - **URL**: [Complete URL]
 - **Content**: [Full text content, key excerpts, statistics, quotes - everything available]
 - **Published**: [Date if available]
-
-## Complete Source List:
-[All URLs with brief descriptions]
 
 CRITICAL: After your 3 searches and data compilation, your job is COMPLETE. STOP here.`,
   });

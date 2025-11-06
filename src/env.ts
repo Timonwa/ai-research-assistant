@@ -4,7 +4,7 @@ import { z } from "zod";
 config();
 
 /**
- * Environment variable schema definition for the simple agent.
+ * Environment variable schema definition for the application.
  *
  * Defines and validates required environment variables including:
  * - DEBUG: Optional debug mode flag (defaults to "false")
@@ -13,8 +13,9 @@ config();
 export const envSchema = z.object({
   ADK_DEBUG: z.coerce.boolean().default(false),
   GOOGLE_API_KEY: z.string(),
-  OPENAI_API_KEY: z.string(),
   LLM_MODEL: z.string().default("gemini-2.5-flash"),
+  GOOGLE_CX: z.string(),
+  OPENAI_API_KEY: z.string(),
 });
 
 /**
