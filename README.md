@@ -1,51 +1,61 @@
+<div align="center">
+  <img src="https://files.catbox.moe/vumztw.png" alt="ADK TypeScript Logo" width="100" />
+  <br/>
+
 # AI Research Assistant
 
-A sophisticated research assistant built with ADK-TS that conducts web research, analyzes findings, and generates comprehensive structured reports on any topic.
+**A sample project to build your own agent with the `@iqai/adk` library.**
+
+_Minimal • Extensible • TypeScript_
+
+</div>
+
+---
+
+An AI-powered research assistant that processes any research topic through three sequential agents, each producing distinct outputs: raw research findings, analytical insights, and a final structured report. Built with ADK-TS to demonstrate advanced agent orchestration and state management.
 
 ## Features
 
-🔍 **Web Research**: Uses Google Search to gather information from multiple sources  
-📊 **Intelligent Analysis**: Analyzes and synthesizes research findings with expert consensus  
-📝 **Professional Reports**: Creates structured reports with actionable insights  
-🤖 **Sequential Workflow**: Three specialized agents working together seamlessly  
-🛡️ **Loop Prevention**: Advanced transfer controls prevent infinite agent loops  
+🔍 **Web Research Output**: First agent gathers and outputs raw research data from multiple sources using Google Search
+📊 **Analysis Output**: Second agent provides analyzed findings and expert consensus  
+📝 **Report Output**: Third agent delivers a final structured report  
+🤖 **Sequential Processing**: Demonstrates how three agents work in sequence  
+🛡️ **State Management**: Shows how agents pass data through session state  
 💬 **Interactive Interface**: User-friendly greeting and topic confirmation system  
 🎯 **Topic Agnostic**: Works with any research topic (technology, business, health, etc.)
 
-## Architecture
+## Architecture and Workflow
 
-The AI Research Assistant uses a sequential agent workflow with specialized roles:
+This project demonstrates sequential agent workflow in ADK-TS, where each agent produces its own distinct output:
 
-1. **Data Collection Agent** - Conducts comprehensive web searches and gathers raw data
-2. **Analysis Agent** - Analyzes findings, identifies patterns, and extracts key insights  
-3. **Writer Agent** - Creates polished, structured reports with recommendations
+1. **Data Collection Agent** - Raw research findings from web searches
+2. **Analysis Agent** - Analytical insights and patterns from the research  
+3. **Writer Agent** - A polished, structured final report
 
-### Data Flow Diagram
+### Data Flow
 
-Each agent automatically accesses previous agent's output via session state with transfer controls to prevent loops.
+```mermaid
+graph TB
+    %% User Interaction
+    User[👤 User Input] --> Greeting[💬 Interactive Greeting]
 
-```text
-User Input → Interactive Greeting
-    ↓
-Data Collection Agent
-├─ Uses: Google Search tool
-├─ Creates: Raw research findings with full content
-├─ Saves: session.state['research_findings']
-├─ Transfer Control: disallowTransferToParent/Peers: true
-    ↓
-Analysis Agent
-├─ Reads: {research_findings}
-├─ Creates: Analytical insights and expert consensus
-├─ Saves: session.state['summarized_insights']
-├─ Transfer Control: disallowTransferToParent/Peers: true
-    ↓
-Writer Agent
-├─ Reads: {research_findings} + {summarized_insights}
-├─ Creates: Comprehensive research report
-├─ Saves: session.state['final_report']
-├─ Transfer Control: disallowTransferToParent/Peers: true
-    ↓
-User Gets: Formatted Research Report
+    %% Sequential Agent Workflow
+    Greeting --> DataAgent[🔍 Data Collection Agent<br/>Uses Google Search Tool<br/>Creates Raw Findings<br/>Saves: research_findings]
+
+    DataAgent --> AnalysisAgent[📊 Analysis Agent<br/>Reads research_findings<br/>Creates Insights<br/>Saves: summarized_insights]
+
+    AnalysisAgent --> WriterAgent[📝 Writer Agent<br/>Reads research_findings + summarized_insights<br/>Creates Final Report<br/>Saves: final_report]
+
+    WriterAgent --> Output[📄 Formatted Research Report]
+
+    %% Styling
+    classDef userLayer fill:#e1f5fe,color:#01579b
+    classDef agentLayer fill:#e8f5e8,color:#1b5e20
+    classDef outputLayer fill:#fff3e0,color:#e65100
+
+    class User,Greeting userLayer
+    class DataAgent,AnalysisAgent,WriterAgent agentLayer
+    class Output outputLayer
 ```
 
 ## Getting Started
@@ -60,8 +70,8 @@ User Gets: Formatted Research Report
 1. Clone this repository
 
 ```bash
-git clone <repository-url>
-cd ai-research-assistant
+git clone https://github.com/IQAIcom/adk-ts-samples
+cd agents/ai-research-assistant
 ```
 
 2. Install dependencies
@@ -81,7 +91,6 @@ Edit `.env` and add your API keys:
 ```env
 GOOGLE_API_KEY=your_google_api_key_here
 LLM_MODEL=gemini-2.5-flash
-ADK_DEBUG=false
 ```
 
 ### Running the Assistant
@@ -99,26 +108,23 @@ adk run   # CLI chat interface
 adk web   # Web interface
 ```
 
-## Usage
+## Usage Examples
 
-The assistant can research any topic and generate comprehensive reports. Example queries:
+The assistant can research any topic and generate comprehensive reports. Here are sample interactions:
+
+```text
+👤 User: Hi! Can you help me research cybersecurity threats and solutions for small businesses?
+🤖 Agent: 👋 Hello! I understand you'd like me to research: cybersecurity threats and solutions for small businesses. Should I proceed with the research? (yes/no)
+👤 User: Yes, please proceed!
+🤖 Agent: [Research process outputs three distinct results]
+```
+
+**Example Queries:**
 
 - "Latest trends in renewable energy technology 2024"
 - "Impact of artificial intelligence on healthcare industry"
-- "Cybersecurity threats and solutions for small businesses"
 - "Market analysis for electric vehicles in Europe"
 - "Recent developments in quantum computing"
-
-## Output Format
-
-The assistant generates structured reports including:
-
-- **Executive Summary** - Key findings overview
-- **Detailed Findings** - In-depth analysis with sources
-- **Trends & Developments** - Recent changes and patterns
-- **Supporting Data** - Statistics and key metrics
-- **Conclusions & Recommendations** - Actionable insights
-- **Sources & References** - Quality-assessed source list
 
 ## Project Structure
 
@@ -136,86 +142,25 @@ The assistant generates structured reports including:
 │   └── index.ts                  # Main execution entry
 ```
 
-## Configuration
+## 📚 Learn More
 
-### Environment Variables
+- [ADK-TS Documentation](https://adk.iqai.com/)
+- [ADK-TS CLI Documentation](https://adk.iqai.com/docs/cli)
+- [GitHub Repository](https://github.com/IQAICOM/adk-ts)
 
-- `GOOGLE_API_KEY` - Required for web search functionality
-- `LLM_MODEL` - AI model to use (default: gemini-2.5-flash)  
-- `ADK_DEBUG` - Enable debug logging (default: false)
+## Contributing
 
-### Customization
+This AI Research Assistant is part of the [ADK-TS Samples](https://github.com/IQAIcom/adk-ts-samples) repository, a collection of example projects demonstrating ADK-TS capabilities.
 
-Each agent can be customized by modifying their instruction sets in:
+We welcome contributions to the ADK-TS Samples repository! You can:
 
-- `src/agents/data-collection-agent/agent.ts` - Research methodology and search strategy
-- `src/agents/analysis-agent/agent.ts` - Analysis approach and synthesis rules
-- `src/agents/writer-agent/agent.ts` - Report format and writing style
+- **Add new sample projects** showcasing different ADK-TS features
+- **Improve existing samples** with better documentation, code quality, or new features
+- **Fix bugs** in current implementations
+- **Update dependencies** and keep samples current
 
-## Development Commands
+Please see our [Contributing Guide](CONTRIBUTING.md) for detailed guidelines.
 
-```bash
-pnpm dev        # Development mode with hot reloading
-pnpm build      # Build TypeScript project  
-pnpm start      # Run built project
-pnpm clean      # Clean build artifacts
-```
+---
 
-## Testing Your Agent
-
-**Traditional Testing**: Run `pnpm dev` to execute sample research queries.
-
-**Interactive Testing with ADK CLI**:
-
-1. Install: `npm install -g @iqai/adk-cli`
-2. Run: `adk run` for CLI chat or `adk web` for web interface
-3. Perfect for development, testing, and demonstrating capabilities
-
-## API Integration
-
-The research assistant uses:
-
-- **Google Search API** - For web search capabilities
-- **Gemini AI Models** - For language processing and generation
-
-Make sure to obtain proper API keys and configure them in your `.env` file.
-
-## Example Workflow
-
-1. **Input**: "Latest trends in renewable energy technology 2024"
-
-2. **Data Collection Phase**:
-   - Searches for recent renewable energy developments
-   - Gathers information from multiple sources
-   - Collects statistics, trends, and expert insights
-
-3. **Analysis Phase**:
-   - Identifies key themes and patterns
-   - Extracts most important findings
-   - Organizes information by relevance and consensus
-
-4. **Writing Phase**:
-   - Creates structured report with clear sections
-   - Adds context and implications
-   - Provides actionable recommendations
-
-## Learn More
-
-- [ADK-TS Documentation](https://adk.iqai.com) - Framework documentation
-- [Google Search API](https://developers.google.com/custom-search/v1/overview) - Search API setup
-
-## Support
-
-If you encounter any issues:
-
-- Create an issue on GitHub
-- Start a discussion on the ADK-TS repository
-
-## License
-
-MIT
-
-## TO DO
-
-- [ ] Update `.env` and `env.ts` to use gemini model by default
-- [ ] Update README and package.json with current features
+**🎉 Ready to build?** This sample project provides a solid foundation for creating your own AI research assistant using the ADK-TS framework. Happy coding!
