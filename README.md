@@ -39,21 +39,26 @@ graph TB
     %% User Interaction
     User[👤 User Input] --> Greeting[💬 Interactive Greeting]
 
-    %% Sequential Agent Workflow
-    Greeting --> DataAgent[🔍 Data Collection Agent<br/>Uses Google Search Tool<br/>Creates Raw Findings<br/>Saves: research_findings]
+    %% Topic Confirmation
+    Greeting --> Confirm[✅ Topic Confirmation<br/>Asks: Should I proceed?]
 
-    DataAgent --> AnalysisAgent[📊 Analysis Agent<br/>Reads research_findings<br/>Creates Insights<br/>Saves: summarized_insights]
+    %% Sequential Agent Workflow - 3 Distinct Outputs
+    Confirm --> DataAgent[🔍 Data Collection Agent<br/>• Uses Google Search Tool<br/>• Creates Raw Findings<br/>• Saves: research_findings<br/>📄 Output 1: Raw Research Data]
 
-    AnalysisAgent --> WriterAgent[📝 Writer Agent<br/>Reads research_findings + summarized_insights<br/>Creates Final Report<br/>Saves: final_report]
+    DataAgent --> AnalysisAgent[📊 Analysis Agent<br/>• Reads research_findings<br/>• Creates Insights<br/>• Saves: summarized_insights<br/>📄 Output 2: Analytical Insights]
 
-    WriterAgent --> Output[📄 Formatted Research Report]
+    AnalysisAgent --> WriterAgent[📝 Writer Agent<br/>• Reads research_findings + summarized_insights<br/>• Creates Final Report<br/>• Saves: final_report<br/>📄 Output 3: Structured Report]
+
+    WriterAgent --> Output[� Three Distinct Research Outputs]
 
     %% Styling
     classDef userLayer fill:#e1f5fe,color:#01579b
+    classDef confirmLayer fill:#fff3e0,color:#e65100
     classDef agentLayer fill:#e8f5e8,color:#1b5e20
-    classDef outputLayer fill:#fff3e0,color:#e65100
+    classDef outputLayer fill:#fce4ec,color:#880e4f
 
     class User,Greeting userLayer
+    class Confirm confirmLayer
     class DataAgent,AnalysisAgent,WriterAgent agentLayer
     class Output outputLayer
 ```
