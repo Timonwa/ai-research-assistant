@@ -4,15 +4,12 @@ import { getRootAgent } from "./agents/agent";
 dotenv.config();
 
 /**
- * This demo shows how three specialized agents work in sequence to process a topic,
- * each producing their own distinct output:
- * 1. Data Collection Agent - Produces raw research findings from web searches
- * 2. Analysis Agent - Produces analytical insights from the findings
- * 3. Writer Agent - Produces a final structured report
+ * This demo shows how two main agents work together to process a topic:
+ * 1. Data Collection Agent - Produces raw research findings and extracted content from web searches
+ * 2. Writer Agent - Produces both analysis and comprehensive reports simultaneously
  *
- * Each agent saves its output to session state via the outputKey property.
- * The outputs are then used by the next agent in the sequence,
- * demonstrating sequential processing, where each agent builds on the previous one's output.
+ * The data collection agent saves search results with extracted content to state.
+ * The writer agent (ParallelAgent) then generates two reports in parallel from this data.
  */
 
 async function main() {
@@ -31,7 +28,8 @@ async function main() {
     console.log(`🤖 Agent: ${greeting}\n`);
 
     // User provides research topic
-    const userInput2 = "Can you help me research about cybersecurity for small businesses?";
+    const userInput2 =
+      "Can you help me research about cybersecurity for small businesses?";
     console.log(`👤 User: ${userInput2}`);
     const topicResponse = await runner.ask(userInput2);
     console.log(`🤖 Agent: ${topicResponse}\n`);

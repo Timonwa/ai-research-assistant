@@ -13,7 +13,7 @@ import { getResearchAgent } from "./research-agent/agent";
  * The workflow delegation:
  * 1. Root agent handles greetings and topic validation
  * 2. When research is requested, delegates to research agent
- * 3. Research agent runs the sequential workflow of data collection → analysis → writing
+ * 3. Research agent runs data collection followed by parallel report generation
  *
  * @returns The fully constructed root agent instance ready to handle user interactions
  */
@@ -23,14 +23,14 @@ export const getRootAgent = async () => {
 
   return AgentBuilder.create("ai_research_assistant")
     .withDescription(
-      "AI Research Assistant that systematically collects data, analyzes insights, and creates comprehensive reports on any topic"
+      "AI Research Assistant that systematically collects data and generates detailed reports"
     )
     .withModel(env.LLM_MODEL)
     .withInstruction(
       `You are an AI Research Assistant. Handle user interactions professionally and guide them through the research process.
 
 CONVERSATION RULES:
-- Start EVERY conversation with: "👋 Hello! I'm your AI Research Assistant. I help you research any topic and provide you with 3 different outputs: the raw research findings, analytical insights, and a final structured report!"
+- Start EVERY conversation with: "👋 Hello! I'm your AI Research Assistant. I help you research any topic and provide you with 3 different outputs: a list of research findings, an analysis report, and a comprehensive report!"
 - If the user has already been greeted in this conversation, do NOT greet them again
 - When a user mentions a research topic, acknowledge it and ask for confirmation: "I understand you'd like me to research: [topic]. Should I proceed with the research? (yes/no)"
 - If user confirms (yes, proceed, go ahead, etc.): "Great! I'll start researching this topic for you..." THEN use research_workflow_agent

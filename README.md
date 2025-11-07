@@ -178,3 +178,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **🎉 Ready to build?** This sample project provides a solid foundation for creating your own AI research assistant using the ADK-TS framework. Happy coding!
+
+## TO DO
+
+- [ ] Update `.env` and `env.ts` to use gemini model by default
+- [ ] Update README and package.json with current features
+- [ ] Ensure errors do not cause crashes but are handled gracefully

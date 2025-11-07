@@ -1,38 +1,34 @@
 import { SequentialAgent } from "@iqai/adk";
 import { getDataCollectionAgent } from "../data-collection-agent/agent";
-import { getAnalysisAgent } from "../analysis-agent/agent";
 import { getWriterAgent } from "../writer-agent/agent";
 
 /**
  * Creates and configures the research workflow agent for the AI Research Assistant.
  *
- * This agent demonstrates the Sequential Agent pattern, coordinating a pipeline
- * of specialized sub-agents that execute in order to transform user research queries
- * into comprehensive structured reports. Each agent builds on the previous one's output.
+ * This agent demonstrates a streamlined workflow coordinating two main agents:
+ * 1. Data Collection Agent → gathers and extracts research data from web sources
+ * 2. Writer Agent → generates both analysis and comprehensive reports simultaneously
  *
- * Sequential Pipeline Flow:
- * 1. Data Collection Agent → gathers raw research data from web sources
- * 2. Analysis Agent → analyzes collected data and extracts key insights
- * 3. Writer Agent → creates comprehensive report from research and insights
+ * Parallel Processing Flow:
+ * Data Collection → [Analysis Report + Comprehensive Report] (parallel)
  *
- * This showcases how Sequential Agents enable sophisticated multi-step reasoning
- * where each specialist agent contributes to progressively enriched output.
+ * This showcases efficient parallel processing where multiple reports are generated
+ * simultaneously from the collected research data.
  *
  * @returns The fully constructed sequential research workflow agent
  */
 
 export const getResearchAgent = async () => {
-  // Create specialist sub-agents for the sequential pipeline
+  // Create main agents for the workflow
   const dataCollectionAgent = getDataCollectionAgent();
-  const analysisAgent = getAnalysisAgent();
   const writerAgent = getWriterAgent();
 
-  // Create Sequential Agent pipeline: research → analyze → write
+  // Create Sequential Agent pipeline: collect data → generate reports
   const researchAgent = new SequentialAgent({
     name: "research_workflow_agent",
     description:
-      "Orchestrates a sequential workflow of data collection, analysis, and report writing to produce comprehensive research reports",
-    subAgents: [dataCollectionAgent, analysisAgent, writerAgent],
+      "Orchestrates data collection followed by parallel report generation (analysis + comprehensive)",
+    subAgents: [dataCollectionAgent, writerAgent],
   });
 
   return researchAgent;

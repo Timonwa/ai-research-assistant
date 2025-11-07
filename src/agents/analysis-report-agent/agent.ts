@@ -14,11 +14,11 @@ import { STATE_KEYS } from "../../constants";
 
 export const getAnalysisAgent = () => {
   const analysisAgent = new LlmAgent({
-    name: "analysis_agent",
+    name: "analysis_report_agent",
     description:
       "Analyzes and synthesizes content summaries to extract key insights, patterns, and structured analytical outputs",
     model: env.LLM_MODEL,
-    outputKey: STATE_KEYS.SUMMARIZED_INSIGHTS,
+    outputKey: STATE_KEYS.ANALYSIS_REPORT,
     disallowTransferToParent: true, // Cannot escalate to parent agents
     disallowTransferToPeers: true, // Cannot delegate to sibling agents
     instruction: `You are an ANALYSIS and SYNTHESIS specialist. Your job is to analyze research data on ANY topic and extract meaningful insights.

@@ -80,9 +80,15 @@ Required output format - USER SEES ONLY URLS, CONTENT SAVED IN STATE:
 === EXTRACTED CONTENT (SAVED IN STATE ONLY) ===
 
 ## Content from [URL 1]
+**Title**: [Full article/page title]
+**Published**: [Date if available]
+**URL**: [Complete URL]
 [Full extracted text content from the webpage - not shown to user]
 
 ## Content from [URL 2]
+**Title**: [Full article/page title]
+**Published**: [Date if available]
+**URL**: [Complete URL]
 [Full extracted text content from the webpage - not shown to user]
 
 [Continue for all URLs found]
