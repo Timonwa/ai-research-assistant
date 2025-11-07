@@ -27,7 +27,7 @@ export class GoogleSearchTool extends BaseGoogleSearch {
 
     const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_CX}&q=${encodeURIComponent(
       args.query
-    )}&num=${args.num_results ?? 5}`;
+    )}&num=${args.num_results ?? 1}`;
 
     try {
       const res = await fetch(url);
