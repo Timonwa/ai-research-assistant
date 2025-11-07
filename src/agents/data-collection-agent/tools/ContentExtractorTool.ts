@@ -22,11 +22,64 @@ const extractContent = async (args: { url: string }) => {
     const html = await res.text();
     const $ = cheerio.load(html);
 
-    // remove scripts & styles
-    $("script, style, noscript").remove();
+    // Remove unwanted elements
+    $(
+      "script, style, noscript, nav, header, footer, aside, .sidebar, .navigation, .menu, .nav, .footer, .header"
+    ).remove();
 
-    const text = $("body").text().replace(/\s+/g, " ").trim();
-    return text.slice(0, 4000); // limit length for safety
+    // Try to find main content in order of preference
+    let content = "";
+
+    // 1. Look for article tag
+    if ($("article").length > 0) {
+      content = $("article").first().text();
+    }
+    // 2. Look for main content divs with common classes/ids
+    else if ($('[class*="content"]').length > 0) {
+      content = $('[class*="content"]').first().text();
+    } else if ($('[id*="content"]').length > 0) {
+      content = $('[id*="content"]').first().text();
+    } else if ($('[class*="article"]').length > 0) {
+      content = $('[class*="article"]').first().text();
+    } else if ($('[id*="article"]').length > 0) {
+      content = $('[id*="article"]').first().text();
+    } else if ($('[class*="main"]').length > 0) {
+      content = $('[class*="main"]').first().text();
+    } else if ($('[id*="main"]').length > 0) {
+      content = $('[id*="main"]').first().text();
+    }
+    // 3. Fallback to body but try to exclude common non-content areas
+    else {
+      // Remove common non-content elements from body
+      $("h1, h2, h3, h4, h5, h6")
+        .filter((i, el) => {
+          const text = $(el).text().toLowerCase();
+          return (
+            text.includes("skip to") ||
+            text.includes("menu") ||
+            text.includes("navigation")
+          );
+        })
+        .remove();
+
+      // Remove elements with very short text (likely navigation items)
+      $("*")
+        .filter((i, el) => $(el).text().trim().length < 10)
+        .remove();
+
+      content = $("body").text();
+    }
+
+    // Clean up the text
+    const cleanedText = content
+      .replace(/\s+/g, " ")
+      .replace(/\n+/g, "\n")
+      .trim();
+
+    // Limit length for articles (1500-2000 words ≈ 8000-12000 characters)
+    const extractedText = cleanedText.slice(0, 12000);
+
+    return extractedText;
   } catch (err: any) {
     return `Error fetching ${url}: ${err.message}`;
   }

@@ -1,5 +1,6 @@
 import * as dotenv from "dotenv";
 import { getRootAgent } from "./agents/agent";
+import { STATE_KEYS } from "./constants";
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ dotenv.config();
  */
 
 async function main() {
-  const { runner } = await getRootAgent();
+  const { runner, session, sessionService } = await getRootAgent();
 
   console.log("==============================\n");
   console.log("🔬 AI Research Assistant");
@@ -39,6 +40,23 @@ async function main() {
     console.log(`👤 User: ${userInput3}`);
     const result = await runner.ask(userInput3);
     console.log(`🤖 Agent: ${result}\n`);
+
+    // TODO Remove the debug logs
+    //  Retrieve the updated session to access the latest state
+    const updatedSession = await sessionService.getSession(
+      session.appName,
+      session.userId,
+      session.id
+    );
+
+    // Display Data Collection results
+    console.log("\n" + "=".repeat(80));
+    console.log("🔬 DATA COLLECTION RESULTS:");
+    console.log("=".repeat(80));
+    console.log(
+      updatedSession?.state[STATE_KEYS.SEARCH_RESULTS] ||
+        "No research findings found"
+    );
   } catch (error) {
     console.error(`❌ Error processing research request:`, error);
     console.log("\n" + "=".repeat(80) + "\n");

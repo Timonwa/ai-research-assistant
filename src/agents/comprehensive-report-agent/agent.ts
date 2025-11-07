@@ -24,11 +24,11 @@ export const getReportAgent = () => {
     disallowTransferToPeers: true, // Cannot delegate to sibling agents
     instruction: `You are a PROFESSIONAL REPORT WRITER. Your ONLY job is to write a comprehensive report.
 
-Research Findings: {${STATE_KEYS.SEARCH_RESULTS}?}
+Research Data: {${STATE_KEYS.SEARCH_RESULTS}?}
 
 CRITICAL INSTRUCTIONS:
 - DO NOT request additional data or research
-- WRITE your report using ONLY the data provided above
+- WRITE your report using ONLY the research data provided above
 - Your job is to write the final report and STOP
 
 WRITING PROCESS - ADAPT TO ANY TOPIC:

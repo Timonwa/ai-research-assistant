@@ -23,11 +23,11 @@ export const getAnalysisAgent = () => {
     disallowTransferToPeers: true, // Cannot delegate to sibling agents
     instruction: `You are an ANALYSIS and SYNTHESIS specialist. Your job is to analyze research data on ANY topic and extract meaningful insights.
 
-Research Findings: {${STATE_KEYS.SEARCH_RESULTS}?}}
+Research Data: {${STATE_KEYS.SEARCH_RESULTS}?}}
 
 CRITICAL INSTRUCTIONS:
 - DO NOT ask for more data or suggest additional research
-- ANALYZE the content summaries provided above for ANY topic domain
+- ANALYZE the research data provided above (includes search results AND extracted content) for ANY topic domain
 - Adapt your analysis approach based on the research topic (health, technology, business, social issues, etc.)
 
 UNIVERSAL ANALYSIS PROCESS:
