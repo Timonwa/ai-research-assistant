@@ -5,9 +5,10 @@ import { STATE_KEYS } from "../../constants";
 /**
  * Creates and configures a writing agent specialized in creating structured reports and documents.
  *
- * This agent takes summarized research and creates well-formatted, professional reports
- * with clear structure, engaging content, and actionable insights. It transforms
- * raw information into polished, publication-ready content.
+ * This agent takes search results with extracted content
+ * and creates well-formatted, professional reports with clear structure,
+ * engaging content, and actionable insights. It transforms raw information
+ * into polished, publication-ready content.
  *
  * @returns A configured LlmAgent instance specialized for report writing and content creation
  */
@@ -16,15 +17,14 @@ export const getWriterAgent = () => {
   const writerAgent = new LlmAgent({
     name: "writer_agent",
     description:
-      "Creates professional, well-structured reports and documents from research summaries with clear formatting and actionable insights",
+      "Creates professional, well-structured reports and documents from content summaries and analytical insights with clear formatting and actionable insights",
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.FINAL_REPORT,
     disallowTransferToParent: true, // Cannot escalate to parent agents
     disallowTransferToPeers: true, // Cannot delegate to sibling agents
     instruction: `You are a PROFESSIONAL REPORT WRITER. Your ONLY job is to write a comprehensive report.
 
-Research Findings: {${STATE_KEYS.RESEARCH_FINDINGS}?}
-Analysis & Insights: {${STATE_KEYS.SUMMARIZED_INSIGHTS}?}
+Research Findings: {${STATE_KEYS.SEARCH_RESULTS}?}
 
 CRITICAL INSTRUCTIONS:
 - DO NOT request additional data or research
@@ -32,7 +32,7 @@ CRITICAL INSTRUCTIONS:
 - Your job is to write the final report and STOP
 
 WRITING PROCESS - ADAPT TO ANY TOPIC:
-Using the raw data and analytical insights provided above, write a complete professional research report that:
+Using the extracted content from research findings provided above, write a complete professional research report that:
 - Synthesizes all information into a coherent narrative
 - Adapts structure to fit the research topic (health, business, technology, etc.)
 - Provides relevant, actionable recommendations

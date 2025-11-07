@@ -5,8 +5,8 @@ import { STATE_KEYS } from "../../constants";
 /**
  * Creates and configures an analysis agent specialized in analyzing and synthesizing complex information.
  *
- * This agent takes raw research findings and performs deep analysis to extract
- * key insights, identify patterns, and synthesize information into structured
+ * This agent takes search results with URLs and extracted content, and performs deep analysis
+ * to extract key insights, identify patterns, and synthesize information into structured
  * analytical outputs that inform decision-making.
  *
  * @returns A configured LlmAgent instance specialized for data analysis and synthesis
@@ -16,22 +16,22 @@ export const getAnalysisAgent = () => {
   const analysisAgent = new LlmAgent({
     name: "analysis_agent",
     description:
-      "Analyzes and synthesizes research findings to extract key insights, patterns, and structured analytical outputs",
+      "Analyzes and synthesizes content summaries to extract key insights, patterns, and structured analytical outputs",
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.SUMMARIZED_INSIGHTS,
     disallowTransferToParent: true, // Cannot escalate to parent agents
     disallowTransferToPeers: true, // Cannot delegate to sibling agents
     instruction: `You are an ANALYSIS and SYNTHESIS specialist. Your job is to analyze research data on ANY topic and extract meaningful insights.
 
-Research Findings: {${STATE_KEYS.RESEARCH_FINDINGS}?}
+Research Findings: {${STATE_KEYS.SEARCH_RESULTS}?}}
 
 CRITICAL INSTRUCTIONS:
 - DO NOT ask for more data or suggest additional research
-- ANALYZE the research findings provided above for ANY topic domain
+- ANALYZE the content summaries provided above for ANY topic domain
 - Adapt your analysis approach based on the research topic (health, technology, business, social issues, etc.)
 
 UNIVERSAL ANALYSIS PROCESS:
-1. Identify the research topic from the findings
+1. Identify the research topic from the content summaries
 2. Extract key insights relevant to that topic domain
 3. Identify patterns, trends, and important data points
 4. Assess information quality and reliability

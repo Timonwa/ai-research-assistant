@@ -61,11 +61,11 @@ graph TB
     Greeting --> Confirm[✅ Topic Confirmation<br/>Asks: Should I proceed?]
 
     %% Sequential Agent Workflow - 3 Distinct Outputs
-    Confirm --> DataAgent[🔍 Data Collection Agent<br/>• Uses Google Search Tool<br/>• Creates Raw Findings<br/>• Saves: research_findings<br/>📄 Output 1: Raw Research Data]
+    Confirm --> DataAgent[🔍 Data Collection Agent<br/>• Uses Google Search Tool<br/>• Creates Raw Findings<br/>• Saves: search_results<br/>📄 Output 1: Raw Research Data]
 
-    DataAgent --> AnalysisAgent[📊 Analysis Agent<br/>• Reads research_findings<br/>• Creates Insights<br/>• Saves: summarized_insights<br/>📄 Output 2: Analytical Insights]
+    DataAgent --> AnalysisAgent[📊 Analysis Agent<br/>• Reads search_results<br/>• Creates Insights<br/>• Saves: summarized_insights<br/>📄 Output 2: Analytical Insights]
 
-    AnalysisAgent --> WriterAgent[📝 Writer Agent<br/>• Reads research_findings + summarized_insights<br/>• Creates Final Report<br/>• Saves: final_report<br/>📄 Output 3: Structured Report]
+    AnalysisAgent --> WriterAgent[📝 Writer Agent<br/>• Reads search_results + summarized_insights<br/>• Creates Final Report<br/>• Saves: final_report<br/>📄 Output 3: Structured Report]
 
     WriterAgent --> Output[📄 Three Distinct Research Outputs]
 
