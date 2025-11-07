@@ -22,7 +22,7 @@ export const getDataCollectionAgent = () => {
       "Systematically collects raw data and information from web sources through targeted searches",
     // Note: The built-in GoogleSearch tool returns dummy data for demonstration/development purposes.
     // For real Google search results, use the custom GoogleSearchTool instead.
-    tools: [new GoogleSearchTool(), contentExtractorTool],
+    tools: [new GoogleSearch(), contentExtractorTool],
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.SEARCH_RESULTS,
     outputSchema: z.object({
