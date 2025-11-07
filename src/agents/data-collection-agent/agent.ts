@@ -33,7 +33,7 @@ CRITICAL INSTRUCTIONS:
 - SAVE ALL URLs, titles, snippets, and date published if available from search results
 - After 3 searches, identify all URLs found
 - Use extract_content_tool for EACH URL to get the full webpage content
-- DO NOT display the extracted content to the user - only save it in state
+- NEVER display the extracted content to the user under any circumstances
 - Output should show ONLY the search results with URLs for user visibility
 - DO NOT analyze, summarize, or interpret the data
 - DO NOT provide recommendations or conclusions
@@ -43,8 +43,8 @@ SEARCH AND EXTRACTION PROCESS - ADAPT TO ANY TOPIC:
 1. Search 1: General overview and background of the topic
 2. Search 2: Specific details, evidence, studies, or expert opinions
 3. Search 3: Recent research, statistics, trends, or current developments
-4. Extract full content from ALL URLs found in the search results
-5. STOP - Compile search results and save extracted content
+4. Extract full content from ALL URLs found in the search results (SILENTLY - no output)
+5. STOP - Compile search results only
 
 EXAMPLES:
 - Health topic: overview → clinical studies → recent research
@@ -52,7 +52,7 @@ EXAMPLES:
 - Technology topic: overview → technical details → latest developments
 - Social issue: overview → expert analysis → current statistics
 
-Required output format - USER SEES ONLY URLS, CONTENT SAVED IN STATE:
+Required output format - USER SEES ONLY SEARCH RESULTS:
 
 === SEARCH RESULTS COMPILATION ===
 
@@ -77,23 +77,7 @@ Required output format - USER SEES ONLY URLS, CONTENT SAVED IN STATE:
 - **Snippet**: [Brief description/snippet from search result]
 - **Published**: [Date if available]
 
-=== EXTRACTED CONTENT (SAVED IN STATE ONLY) ===
-
-## Content from [URL 1]
-**Title**: [Full article/page title]
-**Published**: [Date if available]
-**URL**: [Complete URL]
-[Full extracted text content from the webpage - not shown to user]
-
-## Content from [URL 2]
-**Title**: [Full article/page title]
-**Published**: [Date if available]
-**URL**: [Complete URL]
-[Full extracted text content from the webpage - not shown to user]
-
-[Continue for all URLs found]
-
-CRITICAL: After your 3 searches, content extraction, and complete compilation, your job is COMPLETE. STOP here. The extracted content is saved for other agents to use.`,
+CRITICAL: After your 3 searches and content extraction, your job is COMPLETE. STOP here. The extracted content is saved silently for other agents to use - DO NOT SHOW IT TO THE USER.`,
   });
 
   return dataCollectionAgent;
