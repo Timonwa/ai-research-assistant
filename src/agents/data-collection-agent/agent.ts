@@ -1,9 +1,8 @@
 import { GoogleSearch, LlmAgent } from "@iqai/adk";
-import { z } from "zod";
 import { env } from "../../env";
-import { STATE_KEYS } from "../../constants";
 import { GoogleSearchTool } from "./tools/GoogleSearchTool";
 import { contentExtractorTool } from "./tools/ContentExtractorTool";
+import { saveSearchResultsTool } from "./tools/SaveSearchResultsTool";
 
 /**
  * Creates and configures a data collection agent specialized in gathering raw information.
@@ -22,49 +21,8 @@ export const getDataCollectionAgent = () => {
       "Systematically collects raw data and information from web sources through targeted searches",
     // Note: The built-in GoogleSearch tool returns dummy data for demonstration/development purposes.
     // For real Google search results, use the custom GoogleSearchTool instead.
-    tools: [new GoogleSearch(), contentExtractorTool],
+    tools: [new GoogleSearchTool(), contentExtractorTool, saveSearchResultsTool],
     model: env.LLM_MODEL,
-    outputKey: STATE_KEYS.SEARCH_RESULTS,
-    outputSchema: z.object({
-      search_results: z
-        .array(
-          z.object({
-            round: z
-              .string()
-              .describe("Search round identifier (e.g., '1 - Overview')"),
-            results: z.array(
-              z.object({
-                title: z.string().describe("Article or page title"),
-                url: z.string().describe("Complete URL of the source"),
-                snippet: z
-                  .string()
-                  .describe("Search result snippet or description"),
-                published: z
-                  .string()
-                  .describe("Publication date or 'Not available'"),
-                extracted_content: z
-                  .string()
-                  .describe("Full webpage content (up to 12000 characters)"),
-                extraction_status: z
-                  .enum(["success", "failed"])
-                  .describe("Status of content extraction"),
-                extraction_error: z
-                  .string()
-                  .optional()
-                  .describe("Error message if extraction failed"),
-              })
-            ),
-          })
-        )
-        .describe(
-          "Complete search results with extracted content for analysis agents"
-        ),
-      user_display: z
-        .string()
-        .describe(
-          "Clean formatted search results for user display (no extracted content)"
-        ),
-    }),
     disallowTransferToParent: true, // Cannot escalate to parent agents
     disallowTransferToPeers: true, // Cannot delegate to sibling agents
     instruction: `You are a DATA GATHERING specialist. Your job is to systematically search and extract content for analysis.
@@ -72,7 +30,7 @@ export const getDataCollectionAgent = () => {
 EXECUTION WORKFLOW:
 1. Execute EXACTLY 3 search rounds with different focus areas
 2. After EACH search, immediately extract content from ALL returned URLs
-3. Output structured JSON with complete data for analysis agents AND clean user display
+3. At the end, use save_search_results tool to save complete data and show clean user output
 
 SEARCH STRATEGY:
 Round 1: Topic Overview - broad foundational search
@@ -84,9 +42,11 @@ CONTENT EXTRACTION PROTOCOL:
 - Extract immediately after each search (never batch at end)
 - Track extraction success/failure for each URL
 
-OUTPUT REQUIREMENTS:
+FINAL STEP - SAVE AND DISPLAY:
+After completing all 3 searches and extractions, use the save_search_results tool with:
 
-You must return a clean formatted text for users (NO extracted content):
+1. search_results: Complete array with extracted content for analysis agents
+2. user_display: Clean formatted text (NO extracted content) like this:
 
 === SEARCH RESULTS COMPILATION ===
 
@@ -108,13 +68,13 @@ You must return a clean formatted text for users (NO extracted content):
 CRITICAL RULES:
 ✅ Execute exactly 3 search rounds
 ✅ Extract content from every URL immediately after each search
-✅ Return structured JSON with both complete data and clean user display
-✅ Display ONLY the "user_display" field content to the user (not the full JSON)
+✅ Use save_search_results tool at the end to separate state data from user display
+✅ user_display should ONLY contain URLs, titles, and dates (NO extracted content)
 ❌ NEVER include extracted content in user_display
 ❌ NO analysis or interpretation in output
-❌ STOP after completing 3 searches + extractions
+❌ STOP after using save_search_results tool
 
-IMPORTANT: When presenting your final response, show the user ONLY the content from the "user_display" field. The complete JSON structure with extracted content should be stored internally for analysis agents, but users should only see the clean formatted search results.`,
+The save_search_results tool will automatically save the complete data to state and show only the clean user display.`,
   });
 
   return dataCollectionAgent;

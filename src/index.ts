@@ -53,10 +53,33 @@ async function main() {
     console.log("\n" + "=".repeat(80));
     console.log("🔬 DATA COLLECTION RESULTS:");
     console.log("=".repeat(80));
-    console.log(
-      updatedSession?.state[STATE_KEYS.SEARCH_RESULTS] ||
-        "No research findings found"
-    );
+    const searchResults = updatedSession?.state[STATE_KEYS.SEARCH_RESULTS];
+    if (searchResults) {
+      console.log("📊 Search Results Structure:");
+      searchResults.forEach((round: any, index: number) => {
+        console.log(`\n--- Round ${index + 1}: ${round.round} ---`);
+        console.log(`Results count: ${round.results?.length || 0}`);
+
+        round.results?.forEach((result: any, idx: number) => {
+          console.log(`\n  [${idx + 1}] Title: ${result.title}`);
+          console.log(`      URL: ${result.url}`);
+          console.log(`      Published: ${result.published}`);
+          console.log(`      Extraction: ${result.extraction_status}`);
+          console.log(
+            `      Content Length: ${
+              result.extracted_content?.length || 0
+            } chars`
+          );
+          // Show first 200 chars of content as preview
+          if (result.extracted_content) {
+            const preview = result.extracted_content.substring(0, 200) + "...";
+            console.log(`      Content Preview: ${preview}`);
+          }
+        });
+      });
+    } else {
+      console.log("No research findings found");
+    }
   } catch (error) {
     console.error(`❌ Error processing research request:`, error);
     console.log("\n" + "=".repeat(80) + "\n");
