@@ -168,6 +168,7 @@ The assistant can research any topic and generate comprehensive reports. Here ar
 
 - [ADK-TS Documentation](https://adk.iqai.com/)
 - [ADK-TS CLI Documentation](https://adk.iqai.com/docs/cli)
+- [Google API Keys](https://aistudio.google.com/api-keys)
 - [Google Custom Search API Documentation](https://developers.google.com/custom-search/v1/overview)
 - [GitHub Repository](https://github.com/IQAICOM/adk-ts)
 - [Discord Community](https://discord.gg/w2Uk6ACK4D)
