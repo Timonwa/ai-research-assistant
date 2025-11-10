@@ -12,42 +12,53 @@ _Minimal • Extensible • TypeScript_
 
 ---
 
-An AI-powered research assistant that processes any research topic through three sequential agents, each producing distinct outputs: raw research findings, analytical insights, and a final structured report. Built with ADK-TS to demonstrate advanced agent orchestration and state management.
+An AI-powered research assistant that processes any research topic through a sophisticated agent workflow: data collection with content extraction, followed by parallel analysis and report generation. Built with ADK-TS to demonstrate advanced agent orchestration, structured outputs, and state management.
 
 ## Features
 
-- 🔍 **Web Research Output**: First agent gathers and outputs raw research data from multiple sources using Google Search
-- 📊 **Analysis Output**: Second agent provides analyzed findings and expert consensus  
-- 📝 **Report Output**: Third agent delivers a final structured report  
-- 🤖 **Sequential Processing**: Demonstrates how three agents work in sequence  
-- 🛡️ **State Management**: Shows how agents pass data through session state  
-- 💬 **Interactive Interface**: User-friendly greeting and topic confirmation system  
+- 🔍 **Smart Data Collection**: Searches web sources and extracts full article content from URLs
+- 📊 **Parallel Analysis**: Analysis and comprehensive reports generated simultaneously
+- 📝 **Structured Outputs**: Data collection agent uses Zod schema for consistent data structure
+- 🤖 **Sequential + Parallel Processing**: Data collection → [Analysis + Report] parallel execution
+- 🛡️ **State Management**: Agents pass structured data through session state
+- 💬 **Interactive Interface**: User-friendly greeting and topic confirmation system
 - 🎯 **Topic Agnostic**: Works with any research topic (technology, business, health, etc.)
+- 📄 **Content Extraction**: Automatically extracts and processes full webpage content
 
-> **Note**: This project currently uses the built-in Google Search tool that returns dummy data for demonstration purposes. For real data, you can extend it just as it's done in `GoogleSearchTool.ts` to fetch real results. You can use the `GoogleSearchTool` to test with real Google Custom Search API data.
+> **Note**: This project currently uses the built-in Google Search tool that returns dummy data for demonstration purposes. For real data, you can extend it just as it's done in `GoogleSearchTool.ts` to fetch real results from Google Custom Search API.
 
 ## Architecture and Workflow
 
-This project demonstrates sequential agent workflow in ADK-TS, where each agent produces its own distinct output:
+This project demonstrates advanced agent orchestration in ADK-TS with sequential data collection followed by parallel report generation:
 
-1. **Data Collection Agent** - Raw research findings from web searches
-2. **Analysis Agent** - Analytical insights and patterns from the research  
-3. **Writer Agent** - A polished, structured final report
+1. **Root Agent** (`ai_research_assistant`) - Handles user interaction and topic confirmation
+2. **Research Workflow Agent** (`research_workflow_agent`) - SequentialAgent that orchestrates the research process
+3. **Data Collection Agent** (`data_collection_agent`) - Searches web sources and extracts full content from URLs
+4. **Writer Workflow Agent** (`writer_workflow_agent`) - ParallelAgent that coordinates report generation
+5. **Analysis Report Agent** (`analysis_report_agent`) - Generates analytical insights in parallel
+6. **Comprehensive Report Agent** (`comprehensive_report_agent`) - Creates detailed reports in parallel
 
 ### Project Structure
 
 ```text
 ├── src/
 │   ├── agents/
-│   │   ├── agent.ts              # Root orchestrator agent
-│   │   ├── data-collection-agent/ # Web research specialist
+│   │   ├── agent.ts                      # Root orchestrator agent (ai_research_assistant)
+│   │   ├── research-agent/
+│   │   │   └── agent.ts                  # Sequential workflow coordinator (research_workflow_agent)
+│   │   ├── data-collection-agent/        # Web research + content extraction (data_collection_agent)
+│   │   │   ├── agent.ts
+│   │   │   └── tools/
+│   │   │       ├── GoogleSearchTool.ts
+│   │   │       └── ContentExtractorTool.ts
+│   │   ├── writer-agent/                 # Parallel writer coordinator (writer_workflow_agent)
 │   │   │   └── agent.ts
-│   │   ├── analysis-agent/       # Content analysis specialist  
+│   │   ├── analysis-report-agent/        # Analysis specialist (analysis_report_agent)
 │   │   │   └── agent.ts
-│   │   └── writer-agent/         # Report writing specialist
+│   │   └── comprehensive-report-agent/   # Report specialist (comprehensive_report_agent)
 │   │       └── agent.ts
-│   ├── env.ts                    # Environment configuration
-│   └── index.ts                  # Main execution entry
+│   ├── env.ts                            # Environment configuration
+│   └── index.ts                          # Main execution entry
 ```
 
 ### Data Flow
@@ -60,14 +71,17 @@ graph TB
     %% Topic Confirmation
     Greeting --> Confirm[✅ Topic Confirmation<br/>Asks: Should I proceed?]
 
-    %% Sequential Agent Workflow - 3 Distinct Outputs
-    Confirm --> DataAgent[🔍 Data Collection Agent<br/>• Uses Google Search Tool<br/>• Creates Raw Findings<br/>• Saves: search_results<br/>📄 Output 1: Raw Research Data]
+    %% Sequential Data Collection → Parallel Report Generation
+    Confirm --> DataAgent[🔍 Data Collection Agent<br/>• Uses Google Search Tool<br/>• Extracts webpage content<br/>• Saves: search_results<br/>📄 Output 1: Raw Research Data]
 
-    DataAgent --> AnalysisAgent[📊 Analysis Agent<br/>• Reads search_results<br/>• Creates Insights<br/>• Saves: summarized_insights<br/>📄 Output 2: Analytical Insights]
+    DataAgent --> WriterWorkflow[🔄 Writer Workflow Agent<br/>ParallelAgent coordinator]
+    
+    WriterWorkflow --> AnalysisAgent[📊 Analysis Report Agent<br/>• Reads search_results<br/>• Creates analytical insights<br/>• Saves: analysis_report<br/>📄 Output 2: Analysis Report]
+    
+    WriterWorkflow --> ReportAgent[📝 Comprehensive Report Agent<br/>• Reads search_results<br/>• Creates detailed report<br/>• Saves: comprehensive_report<br/>📄 Output 3: Comprehensive Report]
 
-    AnalysisAgent --> WriterAgent[📝 Writer Agent<br/>• Reads search_results + summarized_insights<br/>• Creates Final Report<br/>• Saves: final_report<br/>📄 Output 3: Structured Report]
-
-    WriterAgent --> Output[📄 Three Distinct Research Outputs]
+    AnalysisAgent --> Output[📄 Three Distinct Research Outputs]
+    ReportAgent --> Output
 
     %% Styling
     classDef userLayer fill:#e1f5fe,color:#01579b
@@ -77,7 +91,7 @@ graph TB
 
     class User,Greeting userLayer
     class Confirm confirmLayer
-    class DataAgent,AnalysisAgent,WriterAgent agentLayer
+    class DataAgent,WriterWorkflow,AnalysisAgent,ReportAgent agentLayer
     class Output outputLayer
 ```
 
@@ -183,4 +197,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [ ] Update `.env` and `env.ts` to use gemini model by default
 - [ ] Update README and package.json with current features
-- [ ] Ensure errors do not cause crashes but are handled gracefully
