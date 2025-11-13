@@ -1,14 +1,13 @@
-import { GoogleSearch, LlmAgent } from "@iqai/adk";
+import { LlmAgent } from "@iqai/adk";
 import { z } from "zod";
 import { env } from "../../env";
 import { STATE_KEYS } from "../../constants";
-import { GoogleSearchTool } from "./tools/GoogleSearchTool";
-import { contentExtractorTool } from "./tools/ContentExtractorTool";
+import { tavilySearchTool } from "./tools/TavilySearchTool";
 
 /**
  * Creates and configures a data collection agent specialized in gathering raw information.
  *
- * This agent is equipped with Google Search capabilities to find relevant information
+ * This agent is equipped with Tavily Search capabilities to find relevant information
  * on any given topic. It conducts systematic web searches and collects raw data
  * from multiple sources without analysis or interpretation.
  *
@@ -19,102 +18,80 @@ export const getDataCollectionAgent = () => {
   const dataCollectionAgent = new LlmAgent({
     name: "data_collection_agent",
     description:
-      "Systematically collects raw data and information from web sources through targeted searches",
-    // Note: The built-in GoogleSearch tool returns dummy data for demonstration/development purposes.
-    // For real Google search results, use the custom GoogleSearchTool instead.
-    tools: [new GoogleSearch(), contentExtractorTool],
+      "Systematically collects raw information from web sources using Tavily Search without analysis or interpretation",
+    tools: [tavilySearchTool],
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.SEARCH_RESULTS,
     outputSchema: z.object({
-      search_results: z
+      search_rounds: z
         .array(
           z.object({
-            round: z
+            round_name: z
               .string()
-              .describe("Search round identifier (e.g., '1 - Overview')"),
-            results: z.array(
-              z.object({
-                title: z.string().describe("Article or page title"),
-                url: z.string().describe("Complete URL of the source"),
-                snippet: z
-                  .string()
-                  .describe("Search result snippet or description"),
-                published: z
-                  .string()
-                  .describe("Publication date or 'Not available'"),
-                extracted_content: z
-                  .string()
-                  .describe("Full webpage content (up to 12000 characters)"),
-                extraction_status: z
-                  .enum(["success", "failed"])
-                  .describe("Status of content extraction"),
-                extraction_error: z
-                  .string()
-                  .optional()
-                  .describe("Error message if extraction failed"),
-              })
-            ),
+              .describe(
+                "Name of the search round (e.g., 'Overview', 'Specific Details', 'Recent Developments')"
+              ),
+            query: z.string().describe("The search query used for this round"),
+            results: z
+              .array(
+                z.object({
+                  url: z.string().describe("URL of the search result"),
+                  title: z.string().describe("Title of the webpage"),
+                  content: z.string().describe("Processed content from Tavily"),
+                  score: z.number().describe("Relevance score from Tavily"),
+                  raw_content: z
+                    .string()
+                    .nullable()
+                    .describe("Raw content if available, may be null"),
+                })
+              )
+              .describe("Array of search results from this round"),
           })
         )
-        .describe(
-          "Complete search results with extracted content for analysis agents"
-        ),
-      user_display: z
-        .string()
-        .describe(
-          "Clean formatted search results for user display (no extracted content)"
-        ),
+        .describe("Results from all 3 search rounds"),
     }),
-    disallowTransferToParent: true, // Cannot escalate to parent agents
-    disallowTransferToPeers: true, // Cannot delegate to sibling agents
-    instruction: `You are a DATA GATHERING specialist. Your job is to systematically search and extract content for analysis.
+    disallowTransferToParent: false, // Allow transfer to parent agents
+    disallowTransferToPeers: false, // Allow transfer to sibling agents
+    instruction: `You are a DATA GATHERING specialist. Your job is to systematically search the web using Tavily, collect raw information, save it to state, and then transfer to the research_workflow_agent.
 
 EXECUTION WORKFLOW:
-1. Execute EXACTLY 3 search rounds with different focus areas
-2. After EACH search, immediately extract content from ALL returned URLs
-3. Output structured JSON with complete data for analysis agents AND clean user display
+1. Execute EXACTLY 3 search rounds with different focus areas using the tavily_search tool
+2. Each search returns structured results with URLs, titles, content, and metadata
+3. Structure all results into the required JSON format and save to state
+4. Once data collection is complete, transfer to research_workflow_agent
 
 SEARCH STRATEGY:
-Round 1: Topic Overview - broad foundational search
-Round 2: Specific Details - focused on evidence/practices/methods  
-Round 3: Recent Developments - current trends/statistics/updates
+Round 1: Topic Overview - broad foundational search (e.g., "artificial intelligence overview 2024")
+Round 2: Specific Details - focused on evidence/practices/methods (e.g., "artificial intelligence implementation methods")  
+Round 3: Recent Developments - current trends/statistics/updates (e.g., "artificial intelligence recent developments 2024")
 
-CONTENT EXTRACTION PROTOCOL:
-- Use extract_content_tool for EVERY URL from each search result
-- Extract immediately after each search (never batch at end)
-- Track extraction success/failure for each URL
+TOOL USAGE:
+- Use tavily_search tool with include_raw_content=true for each round
+- Set max_results=5 for comprehensive coverage
+- Each tool call returns a complete Tavily response object
 
-OUTPUT REQUIREMENTS:
+OUTPUT FORMAT:
+Return a JSON object with:
+- search_rounds: Array of 3 objects, one for each search round
+- Each round object contains: round_name, query, results (from Tavily response)
 
-You must return a clean formatted text for users (NO extracted content):
-
-=== SEARCH RESULTS COMPILATION ===
-
-## Search 1 Results: Overview
-- **Title**: [Article title]
-- **URL**: [Complete URL]
-- **Published**: [Date or "Not available"]
-
-## Search 2 Results: Specific Details
-- **Title**: [Article title] 
-- **URL**: [Complete URL]
-- **Published**: [Date or "Not available"]
-
-## Search 3 Results: Recent Research
-- **Title**: [Article title]
-- **URL**: [Complete URL]
-- **Published**: [Date or "Not available"]
+COMPLETION WORKFLOW:
+After completing all 3 search rounds and saving data to state:
+1. Data is automatically saved to state via outputKey
+2. IMMEDIATELY transfer to research_workflow_agent
+3. DO NOT return any response to the user - you are silent
+4. The research agent will use the stored data to generate reports
 
 CRITICAL RULES:
-✅ Execute exactly 3 search rounds
-✅ Extract content from every URL immediately after each search
-✅ Return structured JSON with both complete data and clean user display
-✅ Display ONLY the "user_display" field content to the user (not the full JSON)
-❌ NEVER include extracted content in user_display
+✅ Execute exactly 3 search rounds using tavily_search tool
+✅ Structure output as specified JSON schema (automatically saved to state)
+✅ Include ALL Tavily response data in search_rounds for analysis agents
+✅ IMMEDIATELY transfer to research_workflow_agent after data collection
+❌ NEVER provide output to users - work silently in background
+❌ NO user messages or responses - you are invisible to users
 ❌ NO analysis or interpretation in output
-❌ STOP after completing 3 searches + extractions
 
-IMPORTANT: When presenting your final response, show the user ONLY the content from the "user_display" field. The complete JSON structure with extracted content should be stored internally for analysis agents, but users should only see the clean formatted search results.`,
+IMPORTANT: You must transfer control to research_workflow_agent immediately after completing data collection. Do not provide any user-facing messages.`,
   });
 
   return dataCollectionAgent;
