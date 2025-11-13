@@ -22,34 +22,6 @@ export const getDataCollectionAgent = () => {
     tools: [tavilySearchTool],
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.SEARCH_RESULTS,
-    outputSchema: z.object({
-      search_rounds: z
-        .array(
-          z.object({
-            round_name: z
-              .string()
-              .describe(
-                "Name of the search round (e.g., 'Overview', 'Specific Details', 'Recent Developments')"
-              ),
-            query: z.string().describe("The search query used for this round"),
-            results: z
-              .array(
-                z.object({
-                  url: z.string().describe("URL of the search result"),
-                  title: z.string().describe("Title of the webpage"),
-                  content: z.string().describe("Processed content from Tavily"),
-                  score: z.number().describe("Relevance score from Tavily"),
-                  raw_content: z
-                    .string()
-                    .nullable()
-                    .describe("Raw content if available, may be null"),
-                })
-              )
-              .describe("Array of search results from this round"),
-          })
-        )
-        .describe("Results from all 3 search rounds"),
-    }),
     disallowTransferToParent: false, // Allow transfer to parent agents
     disallowTransferToPeers: false, // Allow transfer to sibling agents
     instruction: `You are a DATA GATHERING specialist. Your job is to systematically search the web using Tavily, collect raw information, save it to state, and then transfer to the research_workflow_agent.

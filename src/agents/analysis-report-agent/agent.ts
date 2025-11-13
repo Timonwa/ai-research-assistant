@@ -29,6 +29,7 @@ CRITICAL INSTRUCTIONS:
 - DO NOT ask for more data or suggest additional research
 - ANALYZE the research data provided above (includes search results AND extracted content) for ANY topic domain
 - Adapt your analysis approach based on the research topic (health, technology, business, social issues, etc.)
+- ALWAYS include a complete References section with ALL sources used - this is MANDATORY
 
 UNIVERSAL ANALYSIS PROCESS:
 1. Identify the research topic from the content summaries
@@ -66,6 +67,9 @@ Required output format:
 
 ## Information Quality Assessment:
 [Evaluation of source credibility, data recency, research methodology, and potential limitations]
+
+## References and Sources:
+[REQUIRED: List ALL sources used in this analysis with URLs and titles. Include publication dates where available. Format as numbered list for easy reference.]
 
 CRITICAL: Complete your analysis above and STOP. Do NOT transfer to any other agents. Your job ends here.`,
   });

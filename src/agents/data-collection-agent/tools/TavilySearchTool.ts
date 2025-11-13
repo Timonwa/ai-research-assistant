@@ -1,10 +1,12 @@
 import { createTool } from "@iqai/adk";
 import { tavily as createTavilyClient } from "@tavily/core";
 import { z } from "zod";
+import { STATE_KEYS } from "../../../constants";
 
 /**
  * Tavily Search Tool that allows web searching.
  * Returns search results with URLs and their content in a single call.
+ * Accumulates results in state for access by subsequent agents.
  */
 export const tavilySearchTool = createTool({
   name: "tavily_search",
@@ -12,20 +14,8 @@ export const tavilySearchTool = createTool({
     "Search the web using Tavily and return results with URLs and content",
   schema: z.object({
     query: z.string().describe("The search query to execute"),
-    max_results: z
-      .number()
-      .optional()
-      .default(5)
-      .describe("Maximum number of results to return (1-20)"),
-    include_raw_content: z
-      .union([z.boolean(), z.enum(["markdown", "text"])])
-      .optional()
-      .default(true)
-      .describe(
-        'Include the cleaned and parsed HTML content of each search result. "markdown" or True returns search result content in markdown format. "text" returns the plain text from the results and may increase latency.'
-      ),
   }),
-  fn: async ({ query, max_results = 5, include_raw_content = true }) => {
+  fn: async ({ query }, { state }) => {
     const TAVILY_API_KEY = process.env.TAVILY_API_KEY || "";
 
     // If no API key, return mock data for development
@@ -52,15 +42,47 @@ export const tavilySearchTool = createTool({
 
     const tavily = createTavilyClient({ apiKey: TAVILY_API_KEY });
 
-    // Ensure max_results is within bounds
-    const clampedMaxResults = Math.min(Math.max(max_results, 1), 20);
-
     // Perform the search with content extraction
     const response = await tavily.search(query, {
-      maxResults: clampedMaxResults,
-      includeRawContent:
-        include_raw_content === true ? "markdown" : include_raw_content,
+      includeRawContent: "markdown",
+      maxResults: 2,
     });
+
+    // Get existing search results from state or initialize empty array
+    const existingResults = state.get(STATE_KEYS.SEARCH_RESULTS) || [];
+
+    // Check if we already have 3 searches - prevent excessive searching
+    if (Array.isArray(existingResults) && existingResults.length >= 3) {
+      console.log(
+        `⚠️  Search limit reached: ${existingResults.length} searches already completed. Skipping additional search for: ${query}`
+      );
+      return {
+        query,
+        results: [],
+        message:
+          "Search limit reached - maximum 3 searches allowed per research session",
+      };
+    }
+
+    // Add this search round to the accumulated results
+    const searchRound = {
+      query: query,
+      timestamp: new Date().toISOString(),
+      results: response.results || [],
+      response_time: response.responseTime || 0,
+      search_number: existingResults.length + 1,
+    };
+
+    const updatedResults = Array.isArray(existingResults)
+      ? [...existingResults, searchRound]
+      : [searchRound];
+
+    // Save accumulated results to state
+    state.set(STATE_KEYS.SEARCH_RESULTS, updatedResults);
+
+    console.log(
+      `🔍 Search ${searchRound.search_number}/3 completed for query: ${query}`
+    );
 
     return response;
   },

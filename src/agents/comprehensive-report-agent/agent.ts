@@ -30,6 +30,7 @@ CRITICAL INSTRUCTIONS:
 - DO NOT request additional data or research
 - WRITE your report using ONLY the research data provided above
 - Your job is to write the final report and STOP
+- ALWAYS include a complete References section with ALL sources used - this is MANDATORY
 
 WRITING PROCESS - ADAPT TO ANY TOPIC:
 Using the extracted content from research findings provided above, write a complete professional research report that:
@@ -77,7 +78,15 @@ UNIVERSAL REPORT STRUCTURE:
 [Summary of key takeaways and final assessment]
 
 ## References and Sources
-[All sources cited in proper format with URLs and publication details]`,
+**MANDATORY: Include ALL sources used in this report**
+[List every source referenced in numbered format with:
+- Title of the article/webpage
+- URL (clickable link)
+- Publication date (if available)
+- Brief description of content relevance
+Example format:
+1. "Article Title" - URL - Date - Brief relevance note
+2. "Second Source Title" - URL - Date - Brief relevance note]`,
   });
 
   return reportAgent;
