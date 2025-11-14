@@ -1,7 +1,39 @@
 import { createTool } from "@iqai/adk";
 import { tavily as createTavilyClient } from "@tavily/core";
 import { z } from "zod";
-import { STATE_KEYS } from "../../constants";
+import { MAX_SEARCHES_PER_SESSION, STATE_KEYS } from "../../constants";
+
+/**
+ * Tool to clear previous search results for a new research session
+ */
+export const clearSearchStateTool = createTool({
+  name: "clear_search_state",
+  description: "Clear previous search results to start a new research session",
+  schema: z.object({}),
+  fn: async ({}, { state }) => {
+    const existingResults = state.get(STATE_KEYS.SEARCH_RESULTS) || [];
+    const resultCount = Array.isArray(existingResults)
+      ? existingResults.length
+      : 0;
+
+    state.set(STATE_KEYS.SEARCH_RESULTS, []);
+    state.set(STATE_KEYS.SEARCH_PROGRESS, {
+      total_searches: 0,
+      remaining_searches: MAX_SEARCHES_PER_SESSION,
+      status: "ready",
+    });
+    console.log(
+      `🧹 Cleared ${resultCount} previous search results for new research session`
+    );
+
+    return {
+      message: `Cleared ${resultCount} previous search results`,
+      cleared: resultCount,
+      remaining_searches: MAX_SEARCHES_PER_SESSION,
+      status: "ready",
+    };
+  },
+});
 
 /**
  * Tavily Search Tool that allows web searching.
@@ -51,17 +83,31 @@ export const tavilySearchTool = createTool({
 
     // Get existing search results from state or initialize empty array
     const existingResults = state.get(STATE_KEYS.SEARCH_RESULTS) || [];
+    const previousResults = Array.isArray(existingResults)
+      ? existingResults
+      : [];
+    const completedSearches = previousResults.length;
 
-    // Check if we already have 3 searches - prevent excessive searching
-    if (Array.isArray(existingResults) && existingResults.length >= 3) {
+    // Check if we already have 3 searches for the current session - prevent excessive searching
+    if (completedSearches >= MAX_SEARCHES_PER_SESSION) {
       console.log(
-        `⚠️  Search limit reached: ${existingResults.length} searches already completed. Skipping additional search for: ${query}`
+        `⚠️  Search limit reached: ${completedSearches} searches already completed for this research session. Skipping additional search for: ${query}`
       );
+      state.set(STATE_KEYS.SEARCH_PROGRESS, {
+        total_searches: completedSearches,
+        remaining_searches: 0,
+        status: "ready_for_transfer",
+      });
       return {
         query,
         results: [],
         message:
-          "Search limit reached - maximum 3 searches allowed per research session",
+          "Search limit reached - maximum 3 searches allowed per research session. Transfer to writer_workflow_agent.",
+        search_number: completedSearches,
+        total_searches: completedSearches,
+        remaining_searches: 0,
+        status: "limit_reached",
+        next_action: "transfer_to_writer_workflow_agent",
       };
     }
 
@@ -71,20 +117,39 @@ export const tavilySearchTool = createTool({
       timestamp: new Date().toISOString(),
       results: response.results || [],
       response_time: response.responseTime || 0,
-      search_number: existingResults.length + 1,
+      search_number: completedSearches + 1,
     };
 
-    const updatedResults = Array.isArray(existingResults)
-      ? [...existingResults, searchRound]
-      : [searchRound];
+    const updatedResults = [...previousResults, searchRound];
+    const remainingSearches = Math.max(
+      0,
+      MAX_SEARCHES_PER_SESSION - updatedResults.length
+    );
+    const status = remainingSearches === 0 ? "complete" : "in_progress";
 
     // Save accumulated results to state
     state.set(STATE_KEYS.SEARCH_RESULTS, updatedResults);
+    state.set(STATE_KEYS.SEARCH_PROGRESS, {
+      total_searches: updatedResults.length,
+      remaining_searches: remainingSearches,
+      status:
+        status === "complete" ? "ready_for_transfer" : "collecting_results",
+    });
 
     console.log(
-      `🔍 Search ${searchRound.search_number}/3 completed for query: ${query}`
+      `🔍 Search ${searchRound.search_number}/${MAX_SEARCHES_PER_SESSION} completed for query: ${query}`
     );
 
-    return response;
+    return {
+      ...response,
+      search_number: searchRound.search_number,
+      total_searches: updatedResults.length,
+      remaining_searches: remainingSearches,
+      status,
+      message:
+        remainingSearches === 0
+          ? "All searches complete. Transfer to writer_workflow_agent."
+          : `Search ${searchRound.search_number}/${MAX_SEARCHES_PER_SESSION} complete. ${remainingSearches} searches remaining.`,
+    };
   },
 });
