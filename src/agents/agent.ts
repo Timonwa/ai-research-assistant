@@ -14,8 +14,8 @@ import { tavilySearchTool } from "./writer-agent/tools/TavilySearchTool";
  * 1. Root agent handles greetings and topic validation
  * 2. When research is confirmed, performs web search directly using Tavily tool
  * 3. Search results are saved to state (not shown to user)
- * 4. Once data is stored, delegates to research agent for report generation
- * 5. Research agent uses stored state data to generate parallel reports
+ * 4. Once data is stored, delegates to writer agent for report generation
+ * 5. Writer agent uses stored state data to generate parallel reports
  *
  * @returns The fully constructed root agent instance ready to handle user interactions
  */
@@ -43,9 +43,9 @@ When user confirms research (yes, proceed, go ahead, etc.), immediately execute 
 1. WEB RESEARCH PHASE (SILENT):
    You MUST use the tavily_search tool EXACTLY 3 times - NO MORE, NO LESS:
    
-   SEARCH 1: tavily_search with query: Topic Overview - broad foundational search (e.g., "artificial intelligence overview 2024")
+   SEARCH 1: tavily_search with query: Topic Overview - broad foundational search (e.g., "artificial intelligence overview")
    SEARCH 2: tavily_search with query: Specific Details - focused on evidence/practices/methods (e.g., "artificial intelligence implementation methods")
-   SEARCH 3: tavily_search with query: current trends/statistics/updates (e.g., "artificial intelligence recent developments 2024")
+   SEARCH 3: tavily_search with query: current trends/statistics/updates (e.g., "artificial intelligence recent developments [current year]")
    
    STOP after these 3 searches - do NOT make additional searches.
    
@@ -56,16 +56,16 @@ When user confirms research (yes, proceed, go ahead, etc.), immediately execute 
    - Each tool call will return search results with URLs and content
 
 2. REPORT COORDINATION PHASE:
-   - After completing ALL 3 tavily_search tool calls, immediately transfer to research_workflow_agent
-   - The research agent will access the search results from your tool calls
-   - The research agent will generate and show both reports to the user
+   - After completing ALL 3 tavily_search tool calls, immediately transfer to writer_workflow_agent
+   - The writer agent will access the search results from your tool calls
+   - The writer agent will generate and show both reports to the user
 
 CRITICAL RULES:
 ✅ Ask for topic confirmation ONLY ONCE
 ✅ After confirmation, immediately start making tool calls - no messages to user
 ✅ MUST make exactly 3 calls to tavily_search tool - COUNT YOUR CALLS
 ✅ Do NOT respond to user during tool execution - work silently
-✅ Transfer to research_workflow_agent immediately after 3rd search
+✅ Transfer to writer_workflow_agent immediately after 3rd search
 ✅ STOP making searches after the 3rd call - do not continue searching
 ❌ NO conversational responses during web research phase
 ❌ NO progress updates or confirmations during tool execution
@@ -73,7 +73,7 @@ CRITICAL RULES:
 ❌ NEVER make more than 3 searches - 3 is the maximum limit
 
 TOOL EXECUTION PATTERN:
-User confirms → tavily_search call 1 → tavily_search call 2 → tavily_search call 3 → transfer to research_workflow_agent
+User confirms → tavily_search call 1 → tavily_search call 2 → tavily_search call 3 → transfer to writer_workflow_agent
 
 IMPORTANT: After confirmation, your next action must be calling tavily_search, not sending a message.`
     )

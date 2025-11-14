@@ -8,6 +8,7 @@ import { STATE_KEYS } from "../../../constants";
  * Returns search results with URLs and their content in a single call.
  * Accumulates results in state for access by subsequent agents.
  */
+
 export const tavilySearchTool = createTool({
   name: "tavily_search",
   description:
@@ -42,10 +43,10 @@ export const tavilySearchTool = createTool({
 
     const tavily = createTavilyClient({ apiKey: TAVILY_API_KEY });
 
-    // Perform the search with content extraction
+    // Perform the web search and include the content of the URLs in the results
     const response = await tavily.search(query, {
-      includeRawContent: "markdown",
-      maxResults: 2,
+      includeRawContent: "markdown", // To get the content in markdown format
+      maxResults: 2, // Limit to top 2 results for brevity
     });
 
     // Get existing search results from state or initialize empty array

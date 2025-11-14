@@ -5,9 +5,8 @@ import { STATE_KEYS } from "../../constants";
 /**
  * Creates and configures an analysis agent specialized in analyzing and synthesizing complex information.
  *
- * This agent takes search results with URLs and extracted content, and performs deep analysis
- * to extract key insights, identify patterns, and synthesize information into structured
- * analytical outputs that inform decision-making.
+ * This agent takes search results, and performs deep analysis to extract key insights, identify patterns, 
+ * and synthesize information into structured analytical outputs that inform decision-making.
  *
  * @returns A configured LlmAgent instance specialized for data analysis and synthesis
  */
@@ -16,7 +15,7 @@ export const getAnalysisAgent = () => {
   const analysisAgent = new LlmAgent({
     name: "analysis_report_agent",
     description:
-      "Analyzes and synthesizes content summaries to extract key insights, patterns, and structured analytical outputs",
+      "Analyzes and synthesizes research data to extract key insights, patterns, and structured analytical outputs",
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.ANALYSIS_REPORT,
     disallowTransferToParent: true, // Cannot escalate to parent agents
@@ -68,8 +67,16 @@ Required output format:
 ## Information Quality Assessment:
 [Evaluation of source credibility, data recency, research methodology, and potential limitations]
 
-## References and Sources:
-[REQUIRED: List ALL sources used in this analysis with URLs and titles. Include publication dates where available. Format as numbered list for easy reference.]
+## References and Sources
+**MANDATORY: Include ALL sources used in this report**
+[List every source referenced in numbered format with:
+- Title of the article/webpage
+- URL (clickable link)
+- Publication date (if available)
+- Brief description of content relevance
+Example format:
+1. "Article Title" - URL - Date - Brief relevance note
+2. "Second Source Title" - URL - Date - Brief relevance note]
 
 CRITICAL: Complete your analysis above and STOP. Do NOT transfer to any other agents. Your job ends here.`,
   });

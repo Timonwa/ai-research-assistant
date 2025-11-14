@@ -4,11 +4,11 @@ import { getRootAgent } from "./agents/agent";
 dotenv.config();
 
 /**
- * This demo shows how two main agents work together to process a topic:
- * 1. Data Collection Agent - Produces raw research findings and extracted content from web searches
+ * This demo shows how the AI Research Assistant works:
+ * 1. Root Agent - Handles user interaction and performs web research using Tavily
  * 2. Writer Agent - Produces both analysis and comprehensive reports simultaneously
  *
- * The data collection agent saves search results with extracted content to state.
+ * The root agent performs exactly 3 targeted web searches and saves results to state.
  * The writer agent (ParallelAgent) then generates two reports in parallel from this data.
  */
 

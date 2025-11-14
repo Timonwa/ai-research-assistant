@@ -1,5 +1,3 @@
-#!/usr/bin/env tsx
-
 import { config } from "dotenv";
 config();
 
@@ -8,6 +6,8 @@ import { tavily as createTavilyClient } from "@tavily/core";
 /**
  * Test script for Tavily search functionality
  * Verifies that Tavily can perform searches and return results with URLs and content
+ *
+ * To run this test: `pnpm tavily-test`
  */
 
 async function testTavilySearch() {
@@ -51,16 +51,16 @@ async function testTavilySearch() {
     const tavily = createTavilyClient({ apiKey: TAVILY_API_KEY });
 
     // Test basic search
-    console.log("1. Testing basic search query...");
+    console.log("1. Testing search query...");
     const response = await tavily.search(
       "artificial intelligence trends 2024",
       {
-        maxResults: 2,
+        maxResults: 1,
         includeRawContent: "markdown",
       }
     );
 
-    console.log("✅ Basic search successful!");
+    console.log("✅ Search successful!");
     console.log(`   Query: ${response.query}`);
     console.log(`   Total results: ${response.results?.length || 0}`);
     console.log(`   Response time: ${response.responseTime || 0}ms\n`);
@@ -68,29 +68,6 @@ async function testTavilySearch() {
     // Display first result details
     if (response.results && response.results.length > 0) {
       const firstResult = response.results[0] as any;
-      console.log("📄 First result details:");
-      console.log(`   URL: ${firstResult.url}`);
-      console.log(`   Title: ${firstResult.title || "(no title)"}`);
-      console.log(`   Content: ${firstResult.content || "(no content)"}`);
-      console.log(`   Score: ${firstResult.score || 0}`);
-      console.log(`   Raw Content preview: ${firstResult.rawContent}`);
-    }
-
-    // Test search without content
-    console.log("\n2. Testing search without raw content...");
-    const noContentResponse = await tavily.search("machine learning basics", {
-      maxResults: 2,
-      includeRawContent: false,
-    });
-
-    console.log("✅ No raw-content search successful!");
-    console.log(`   Query: ${noContentResponse.query}`);
-    console.log(`   Total results: ${noContentResponse.results?.length || 0}`);
-    console.log(`   Response time: ${noContentResponse.responseTime || 0}ms\n`);
-
-    // Display first result details
-    if (noContentResponse.results && noContentResponse.results.length > 0) {
-      const firstResult = noContentResponse.results[0] as any;
       console.log("📄 First result details:");
       console.log(`   URL: ${firstResult.url}`);
       console.log(`   Title: ${firstResult.title || "(no title)"}`);

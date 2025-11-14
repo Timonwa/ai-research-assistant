@@ -8,13 +8,15 @@ config();
  *
  * Defines and validates required environment variables including:
  * - DEBUG: Optional debug mode flag (defaults to "false")
- * - GOOGLE_API_KEY: Required API key for Google/Gemini model access
+ * - OPENAI_API_KEY: Required API key for LLM model access
+ * - LLM_MODEL: AI model to use (defaults to configured model)
+ * - TAVILY_API_KEY: Required API key for web search functionality
  */
 export const envSchema = z.object({
   ADK_DEBUG: z.coerce.boolean().default(false),
   OPENAI_API_KEY: z.string(),
   LLM_MODEL: z.string().default("gemini-2.5-flash"),
-  TAVILY_API_KEY: z.string().optional(),
+  TAVILY_API_KEY: z.string(),
 });
 
 /**

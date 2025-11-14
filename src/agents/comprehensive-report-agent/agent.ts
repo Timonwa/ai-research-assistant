@@ -5,10 +5,7 @@ import { STATE_KEYS } from "../../constants";
 /**
  * Creates and configures a writing agent specialized in creating structured reports and documents.
  *
- * This agent takes search results with extracted content
- * and creates well-formatted, professional reports with clear structure,
- * engaging content, and actionable insights. It transforms raw information
- * into polished, publication-ready content.
+ * This agent takes search results and creates well-formatted, professional reports with clear structure, engaging content, and actionable insights. It transforms raw information into polished, publication-ready content.
  *
  * @returns A configured LlmAgent instance specialized for report writing and content creation
  */
@@ -17,7 +14,7 @@ export const getReportAgent = () => {
   const reportAgent = new LlmAgent({
     name: "comprehensive_report_agent",
     description:
-      "Creates professional, well-structured reports and documents from content summaries and analytical insights with clear formatting and actionable insights",
+      "Creates professional, well-structured reports and documents from research data",
     model: env.LLM_MODEL,
     outputKey: STATE_KEYS.COMPREHENSIVE_REPORT,
     disallowTransferToParent: true, // Cannot escalate to parent agents
@@ -40,6 +37,7 @@ Using the extracted content from research findings provided above, write a compl
 - Uses appropriate academic/professional report structure
 - Includes supporting evidence and citations
 - Offers logical conclusions based on the research
+- Report should be between 1500-2500 words depending on topic complexity
 
 UNIVERSAL REPORT STRUCTURE:
 
