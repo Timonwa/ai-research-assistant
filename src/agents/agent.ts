@@ -1,9 +1,7 @@
 import { AgentBuilder } from "@iqai/adk";
-import { z } from "zod";
 import { env } from "../env";
-import { STATE_KEYS } from "../constants";
-import { getResearchAgent } from "./research-agent/agent";
-import { tavilySearchTool } from "./data-collection-agent/tools/TavilySearchTool";
+import { getWriterAgent } from "./writer-agent/agent";
+import { tavilySearchTool } from "./writer-agent/tools/TavilySearchTool";
 
 /**
  * Creates and configures the root agent for the AI Research Assistant.
@@ -23,7 +21,7 @@ import { tavilySearchTool } from "./data-collection-agent/tools/TavilySearchTool
  */
 
 export const getRootAgent = async () => {
-  const researchAgent = await getResearchAgent();
+  const writerAgent = await getWriterAgent();
 
   return AgentBuilder.create("ai_research_assistant")
     .withDescription(
@@ -79,6 +77,6 @@ User confirms → tavily_search call 1 → tavily_search call 2 → tavily_searc
 
 IMPORTANT: After confirmation, your next action must be calling tavily_search, not sending a message.`
     )
-    .withSubAgents([researchAgent])
+    .withSubAgents([writerAgent])
     .build();
 };
