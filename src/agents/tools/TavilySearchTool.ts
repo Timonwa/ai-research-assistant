@@ -1,7 +1,7 @@
 import { createTool } from "@iqai/adk";
 import { tavily as createTavilyClient } from "@tavily/core";
 import { z } from "zod";
-import { STATE_KEYS } from "../../../constants";
+import { STATE_KEYS } from "../../constants";
 
 /**
  * Tavily Search Tool that allows web searching.

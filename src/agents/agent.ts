@@ -1,7 +1,7 @@
 import { AgentBuilder } from "@iqai/adk";
 import { env } from "../env";
 import { getWriterAgent } from "./writer-agent/agent";
-import { tavilySearchTool } from "./writer-agent/tools/TavilySearchTool";
+import { tavilySearchTool } from "./tools/TavilySearchTool";
 
 /**
  * Creates and configures the root agent for the AI Research Assistant.
