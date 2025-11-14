@@ -37,7 +37,7 @@ Using the extracted content from research findings provided above, write a compl
 - Uses appropriate academic/professional report structure
 - Includes supporting evidence and citations
 - Offers logical conclusions based on the research
-- Report should be between 1500-2500 words depending on topic complexity
+- Report should be between 2000-3000 words depending on topic complexity
 
 UNIVERSAL REPORT STRUCTURE:
 
@@ -84,7 +84,9 @@ UNIVERSAL REPORT STRUCTURE:
 - Brief description of content relevance
 Example format:
 1. "Article Title" - URL - Date - Brief relevance note
-2. "Second Source Title" - URL - Date - Brief relevance note]`,
+2. "Second Source Title" - URL - Date - Brief relevance note]
+
+CRITICAL: Complete your report above and STOP. Do NOT transfer to any other agents. Your job ends here.`,
   });
 
   return reportAgent;
