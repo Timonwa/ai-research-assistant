@@ -1,7 +1,7 @@
 {
   "name": "research-assistant",
   "version": "1.0.0",
-  "description": "AI Research Assistant demo built with ADK-TS framework that conducts web research on any topic using Tavily API, performs analysis, and generates comprehensive structured reports with proper references and citations",
+  "description": "AI Research Assistant built with ADK-TS that conducts web research on any topic using Tavily API, performs analysis, and generates comprehensive structured reports with proper references and citations",
   "main": "dist/index.js",
   "private": true,
   "scripts": {
